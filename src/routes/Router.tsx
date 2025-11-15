@@ -14,6 +14,11 @@ export const Router: FC = () => {
   const [getGameState] = useGetGameStateMutation();
 
   useEffect(() => {
+    if (window.location.pathname === "/pitchdeck") {
+      setIsCheckingAuth(false);
+      return;
+    }
+
     const checkAuth = async () => {
       // Try to fetch game state
       try {

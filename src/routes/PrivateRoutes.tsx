@@ -4,10 +4,13 @@ import MainLayout from "../layout/MainLayout";
 import Home from "../pages/Home";
 import WaitingRoom from "../pages/WaitingRoom";
 import WaitingRoomUser from "../pages/WaitingRoomUser";
+import PitchDeck from "../components/Pitchdeck";
 
 export const PrivateRoutes: FC = () => {
   return (
     <Routes>
+      <Route path="/pitchdeck" element={<PitchDeck />} />
+
       {/* Standalone routes without navbar - must come first */}
       <Route path="/waiting-room" element={<WaitingRoom />} />
       <Route path="/waiting-room-user" element={<WaitingRoomUser />} />
