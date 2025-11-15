@@ -53,6 +53,10 @@ export default function LoginPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!userName.trim()) {
+      setError("Please enter your username");
+      return;
+    }
     setError("");
     setLoading(true);
     setTimeout(async () => {
