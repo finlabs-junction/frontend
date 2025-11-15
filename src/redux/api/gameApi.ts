@@ -15,16 +15,20 @@ interface ExplainEventResponse {
 }
 
 interface ChatRequest {
-  message: string;
+  history: Array<{ role: "user" | "assistant"; content: string }>;
 }
 
 interface ChatResponse {
-  reply: string;
+  content: string;
 }
 
 interface GetAllAccomodationsResponse {
   currentAccommodationId: string;
   accommodations: Accomodation[];
+}
+
+interface EvaluationResponse {
+  content: string;
 }
 
 export const gameApi = createApi({
@@ -44,7 +48,6 @@ export const gameApi = createApi({
 
       return headers;
     },
-    timeout: 5000, // 5 seconds timeout
   }),
   endpoints: (builder) => ({
     getGameState: builder.mutation<GameState, void>({
@@ -165,7 +168,7 @@ export const gameApi = createApi({
         return {
           url: `chat`,
           method: "POST",
-          body: data,
+          body: data.history,
         };
       },
     }),
@@ -201,6 +204,22 @@ export const gameApi = createApi({
         };
       },
     }),
+    getEvaluation: builder.mutation<EvaluationResponse, void>({
+      query() {
+        return {
+          url: `evaluate-player-state`,
+          method: "GET",
+        };
+      },
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        try {
+          const { data } = await queryFulfilled;
+          await dispatch(gameSlice.actions.setEvaluation(data.content));
+        } catch (error: any) {
+          // Error handling is now done in components to avoid duplicates
+        }
+      },
+    }),
   }),
 });
 
@@ -219,4 +238,5 @@ export const {
   useChatWithAIMutation,
   useGetAllAccomodationsQuery,
   useMoveAccommodationMutation,
+  useGetEvaluationMutation,
 } = gameApi;

@@ -14,9 +14,17 @@ interface Message {
   timestamp: Date;
 }
 
+const INITIAL_MESSAGE: Message = {
+  id: "initial",
+  role: "assistant",
+  content:
+    "Hey, I'm your financial advisor. I see all your financial data in the backend. How can I help you?",
+  timestamp: new Date(),
+};
+
 export function FinancialChatbot() {
   const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<Message[]>([INITIAL_MESSAGE]);
   const [inputValue, setInputValue] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const currentGameState = useAppSelector((state) => state.game.state);
@@ -29,7 +37,7 @@ export function FinancialChatbot() {
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages]);
+  }, []);
 
   const getFinancialContext = (gameState: GameState | null): string => {
     if (!gameState) return "";
@@ -79,19 +87,33 @@ Stocks Portfolio: ${gameState.stocks.length > 0 ? gameState.stocks.map((s) => `$
     setInputValue("");
 
     try {
-      // Build the message with financial context
-      const contextualMessage = `${getFinancialContext(currentGameState!)}
+      // Build chat history with financial context prepended to the first user message
+      const chatHistory = messages.map((msg) => ({
+        role: msg.role,
+        content: msg.content,
+      }));
 
-User Question: ${inputValue}`;
+      // Add the new user message with financial context
+      const contextualUserMessage = `${getFinancialContext(currentGameState!)}
+
+${inputValue}`;
+
+      chatHistory.push({
+        role: "user" as const,
+        content: contextualUserMessage,
+      });
 
       const response = await chatWithAI({
-        message: contextualMessage,
+        history: chatHistory,
       }).unwrap();
+
+      // Use explanation as the main response, append hint if available
+      const responseContent = response.content;
 
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
         role: "assistant",
-        content: response.reply,
+        content: responseContent,
         timestamp: new Date(),
       };
 
@@ -159,19 +181,6 @@ User Question: ${inputValue}`;
 
           {/* Messages Container */}
           <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50">
-            {messages.length === 0 && (
-              <div className="text-center text-gray-500 mt-8">
-                <MessageCircle className="h-12 w-12 mx-auto mb-3 text-gray-400" />
-                <p className="text-sm mb-2">
-                  Welcome to your AI Financial Assistant!
-                </p>
-                <p className="text-xs text-gray-400">
-                  Ask me anything about your finances, expenses, or investment
-                  strategy.
-                </p>
-              </div>
-            )}
-
             {messages.map((message) => (
               <div
                 key={message.id}

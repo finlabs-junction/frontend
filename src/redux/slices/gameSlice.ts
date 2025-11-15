@@ -11,6 +11,7 @@ export interface GameData {
   stockPrices?: StockPrices;
   accomodations: Accomodation[];
   currentAccommodationId?: string;
+  evaluation?: string;
 }
 
 const initialState: GameData = {
@@ -18,6 +19,7 @@ const initialState: GameData = {
   stockPrices: undefined,
   accomodations: [],
   currentAccommodationId: undefined,
+  evaluation: undefined,
 };
 
 export const gameSlice = createSlice({
@@ -35,6 +37,9 @@ export const gameSlice = createSlice({
     },
     setCurrentAccommodationId: (state, action: PayloadAction<string>) => {
       state.currentAccommodationId = action.payload;
+    },
+    setEvaluation: (state, action: PayloadAction<string>) => {
+      state.evaluation = action.payload;
     },
   },
 });

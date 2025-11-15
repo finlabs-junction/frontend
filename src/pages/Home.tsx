@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { TimeControls } from "../components/TimeControls";
 import { BudgetDashboard } from "../components/BudgetDashboard";
 import { ExpenseManager } from "../components/ExpenseManager";
@@ -26,8 +26,6 @@ import {
   useStartGameMutation,
   usePauseGameMutation,
   useStopGameMutation,
-  useGetStockPricesMutation,
-  useGetGameStateMutation,
   useGetAllAccomodationsQuery,
 } from "../redux/api/gameApi";
 import LoadingPage from "../components/LoadingScreen";
@@ -41,6 +39,8 @@ import { getInitialExpenses, getInitialIncomes } from "../constants/gameData";
 import { getCookie } from "../utils/cookies";
 import { Leaderboard } from "../components/Leaderboard";
 import { FinancialChatbot } from "../components/FinancialChatbot";
+import { EvaluationModal } from "../components/EvaluationModal";
+import { useEvaluationTimer } from "../hooks/useEvaluationTimer";
 
 export default function Home() {
   const { signOut } = useAuth();
@@ -48,12 +48,10 @@ export default function Home() {
   const stockPrices = useAppSelector((state) => state.game.stockPrices);
 
   const [startGame, { isLoading: isLoadingStartGame }] = useStartGameMutation();
-  const [getGameState] = useGetGameStateMutation();
   const [timeMultiplierMutation, { isLoading: isLoadingMultiplier }] =
     useSetTimeMultiplierMutation();
   const [pauseGame, { isLoading: isLoadingPauseGame }] = usePauseGameMutation();
   const [stopGame, { isLoading: isLoadingStopGame }] = useStopGameMutation();
-  const [getStockPrices] = useGetStockPricesMutation();
   const all_accommodations = useGetAllAccomodationsQuery();
 
   const isPlayer = localStorage.getItem("isHost") === "false";
@@ -104,104 +102,19 @@ export default function Home() {
     setExpenses
   );
 
-  useGameStatePolling({
-    isPlayer,
-    onDateUpdate: setCurrentDate,
-    onPlayingUpdate: setIsPlaying,
-    onNewsUpdate: (news) => {
-      setNewsArticles((prev) => {
-        const existingIds = new Set(prev.map((article) => article.id));
-        const newArticles = news.filter(
-          (article: NewsArticle) => !existingIds.has(article.id)
-        );
-        return [...prev, ...newArticles];
-      });
-    },
-    onGameEnd: signOut,
+  // Evaluation timer - only for logged-in users
+  const { showEvaluation, closeEvaluation } = useEvaluationTimer({
+    intervalMinutes: 1,
+    enabled: !!username, // Only enable if user is logged in
   });
 
-  // Poll stock prices every second
-
-  // Poll game state every 1 second
-  useEffect(() => {
-    const fetchStockPrices = async () => {
-      await getStockPrices();
-    };
-
-    const interval = setInterval(async () => {
-      const result = await getGameState();
-      if (result && result.data && result.data.time) {
-        setCurrentDate(new Date(result.data.time));
-
-        if (isPlayer) {
-          if (result.data.sessionStatus === "ended") {
-            toast.error("Game has ended. Redirecting to waiting room.");
-            await signOut();
-            window.location.reload();
-            return;
-          }
-        }
-
-        setIsPlaying(
-          result.data.sessionStatus === "running" &&
-            result.data.timeProgressionMultiplier > 0
-        );
-
-        const news = result.data.events || [];
-        setNewsArticles((prev) => {
-          const existingIds = new Set(prev.map((article) => article.id));
-          const newArticles = news.filter(
-            (article: NewsArticle) => !existingIds.has(article.id)
-          );
-          return [...prev, ...newArticles];
-        });
-
-        // Update financial history with new data point
-        const date = new Date(result.data.time);
-        const dateString = date.toLocaleDateString("en-US", {
-          month: "short",
-          day: "numeric",
-        });
-
-        setFinancialHistory((prev) => {
-          // Check if we already have data for this date
-          const lastEntry = prev[prev.length - 1];
-          if (lastEntry && lastEntry.date === dateString) {
-            // Update the last entry with new values
-            return [
-              ...prev.slice(0, -1),
-              {
-                date: dateString,
-                balance: result.data.balance ?? lastEntry.balance,
-                income: result.data.monthlyIncome ?? lastEntry.income,
-                expenses: result.data.monthlyExpenses ?? lastEntry.expenses,
-              },
-            ];
-          }
-
-          // Add new entry and keep last 30 data points for clean visualization
-          const newHistory = [
-            ...prev,
-            {
-              date: dateString,
-              balance: result.data.balance ?? 0,
-              income: result.data.monthlyIncome ?? 0,
-              expenses: result.data.monthlyExpenses ?? 0,
-            },
-          ];
-
-          // Keep only the last 30 data points
-          return newHistory.length > 30
-            ? newHistory.slice(newHistory.length - 30)
-            : newHistory;
-        });
-      }
-    }, 1000);
-
-    fetchStockPrices(); // Initial fetch
-
-    return () => clearInterval(interval);
-  }, [getGameState]);
+  useGameStatePolling({
+    isPlayer,
+    setCurrentDate,
+    setIsPlaying,
+    setNewsArticles,
+    setFinancialHistory,
+  });
 
   // Calculate lifestyle indicators
   const lifestyleIndicators = calculateLifestyleIndicators(currentGameState!);
@@ -409,6 +322,9 @@ export default function Home() {
 
       {/* Financial AI Chatbot */}
       <FinancialChatbot />
+
+      {/* Evaluation Modal - appears every 2 minutes for logged-in users */}
+      <EvaluationModal isOpen={showEvaluation} onClose={closeEvaluation} />
     </div>
   );
 }
