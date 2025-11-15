@@ -13,11 +13,11 @@ export function NewsFeed({ articles }: NewsFeedProps) {
   const getCategoryColor = (category: string) => {
     switch (category) {
       case "financial":
-        return "bg-blue-50 text-blue-700 border-blue-200";
+        return "bg-blue-50 dark:bg-blue-950/30 text-blue-700 dark:text-blue-300 border-blue-200 dark:border-blue-800";
       case "alert":
-        return "bg-red-50 text-red-700 border-red-200";
+        return "bg-red-50 dark:bg-red-950/30 text-red-700 dark:text-red-300 border-red-200 dark:border-red-800";
       default:
-        return "bg-gray-50 text-gray-700 border-gray-200";
+        return "bg-gray-50 dark:bg-slate-800 text-gray-700 dark:text-gray-300 border-gray-200 dark:border-slate-700";
     }
   };
 
@@ -25,10 +25,10 @@ export function NewsFeed({ articles }: NewsFeedProps) {
     <Card className="h-fit" data-context="news">
       <CardHeader>
         <div className="flex items-center gap-2">
-          <Newspaper className="w-5 h-5" />
+          <Newspaper className="w-5 h-5 text-gray-900 dark:text-white" />
           <CardTitle>News Feed</CardTitle>
         </div>
-        <p className="text-xs text-gray-500 mt-1">
+        <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
           Time-accurate financial news & events
         </p>
       </CardHeader>
