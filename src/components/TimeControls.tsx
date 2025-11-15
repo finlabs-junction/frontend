@@ -27,13 +27,6 @@ export function TimeControls({
     });
   };
 
-  const formatTime = (date: Date) => {
-    return date.toLocaleTimeString("en-US", {
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-  };
-
   const speedLabels = ["1x", "4x", "12x", "24x"];
   const speedValues = [1, 4, 12, 24];
 
@@ -78,14 +71,18 @@ export function TimeControls({
             </div>
           </div>
         )}
-        <div className="text-right flex items-center gap-4">
-          <div>
-            <div className="text-sm text-gray-500">Current Date</div>
+        <div className="text-right">
+          <div className="text-sm text-gray-500">Current Date & Time</div>
+          <div className="flex items-center gap-3">
             <div>{formatDate(currentDate)}</div>
-          </div>
-          <div>
-            <div className="text-sm text-gray-500">Current Time</div>
-            <div>{formatTime(currentDate)}</div>
+            <div className="text-gray-400">|</div>
+            <div className="text-gray-700">
+              {currentDate.toLocaleTimeString("en-US", {
+                hour: "2-digit",
+                minute: "2-digit",
+                hour12: true,
+              })}
+            </div>
           </div>
         </div>
       </div>
