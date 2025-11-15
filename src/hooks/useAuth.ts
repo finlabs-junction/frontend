@@ -1,8 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useNavigate } from "react-router-dom";
-import { useLoginUserMutation } from "../redux/api/userApi";
-import { useAppDispatch, useAppSelector } from "../redux/store";
+import {
+  useSessionCreateMutation,
+  useSignOutMutation,
+} from "../redux/api/userApi";
+import { useAppDispatch } from "../redux/store";
 import { userSlice } from "../redux/slices/userSlice";
+import { setCookie } from "../utils/cookies";
 
 interface AuthError {
   message: string;
@@ -15,13 +19,13 @@ interface AuthResult {
 export const useAuth = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const [loginUser] = useLoginUserMutation();
-
-  const token = useAppSelector((state) => state.user.token);
+  const [sessionCreate] = useSessionCreateMutation();
+  const [logoutUser] = useSignOutMutation();
 
   const signIn = async (username: string): Promise<AuthResult> => {
     try {
-      await loginUser({ username }).unwrap();
+      await sessionCreate({ username }).unwrap();
+      setCookie("username", username);
       return {};
     } catch (err: any) {
       return {
@@ -34,19 +38,14 @@ export const useAuth = () => {
     }
   };
 
-  const signOut = () => {
+  const signOut = async () => {
+    await logoutUser().unwrap();
     dispatch(userSlice.actions.logOut());
     navigate("/login");
   };
 
-  const isLoggedIn = token !== undefined;
-
-  const user = useAppSelector((state) => state.user.user);
-
   return {
     signIn,
-    isLoggedIn,
     signOut,
-    user,
   };
 };

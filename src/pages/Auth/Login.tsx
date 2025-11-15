@@ -31,15 +31,19 @@ export default function LoginPage() {
     e.preventDefault();
     setError("");
     setLoading(true);
+    setTimeout(async () => {
+      const { error } = await signIn(userName);
 
-    const { error } = await signIn(userName);
+      if (error) {
+        setError(error.message);
 
-    if (error) {
-      setError(error.message);
-      setLoading(false);
-    } else {
-      navigate("/");
-    }
+        setLoading(false);
+      } else {
+        window.location.pathname = "/";
+        window.location.reload();
+        navigate("/");
+      }
+    }, 2000);
   };
 
   if (loading) {

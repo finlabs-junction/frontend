@@ -51,7 +51,7 @@ export function NewsFeed({ articles }: NewsFeedProps) {
   };
 
   return (
-    <Card className="h-full" data-context="news">
+    <Card className="h-fit" data-context="news">
       <CardHeader>
         <div className="flex items-center gap-2">
           <Newspaper className="w-5 h-5" />

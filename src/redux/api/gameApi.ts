@@ -2,19 +2,17 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { type RootState } from "../store";
+import { gameSlice } from "../slices/gameSlice";
 
-interface LoginResponse {
+interface GameStateResponse {
   sessionId: string;
-}
-
-interface LoginProps {
   username: string;
 }
 
-export const userApi = createApi({
-  reducerPath: "userApi",
+export const gameApi = createApi({
+  reducerPath: "gameApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: `${import.meta.env.VITE_APP_BACKEND_URL}/session`,
+    baseUrl: `${import.meta.env.VITE_APP_BACKEND_URL}/poll`,
     credentials: "include", // Send cookies with every request
     prepareHeaders: (headers, { getState }) => {
       const token = (getState() as RootState).user.token;
@@ -22,36 +20,29 @@ export const userApi = createApi({
 
       return headers;
     },
+    timeout: 5000, // 5 seconds timeout
   }),
   endpoints: (builder) => ({
-    sessionCreate: builder.mutation<LoginResponse, LoginProps>({
+    getGameState: builder.mutation<GameStateResponse, void>({
       query(data) {
         return {
-          url: "create",
-          method: "POST",
+          url: "",
+          method: "GET",
           body: data,
         };
       },
-      async onQueryStarted(_) {
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
         try {
-          /* const { data } = await queryFulfilled;
+          const { data } = await queryFulfilled;
 
-          await dispatch(userSlice.actions.setUser(data.user));
-          await dispatch(userSlice.actions.setToken(data.access_token));*/
+          await dispatch(gameSlice.actions.setGameSessionId(data.sessionId));
+          await dispatch(gameSlice.actions.setGameUsername(data.username));
         } catch (error: any) {
           // Error handling is now done in components to avoid duplicates
         }
       },
     }),
-    signOut: builder.mutation<void, void>({
-      query() {
-        return {
-          url: "logout",
-          method: "GET",
-        };
-      },
-    }),
   }),
 });
 
-export const { useSessionCreateMutation, useSignOutMutation } = userApi;
+export const { useGetGameStateMutation } = gameApi;

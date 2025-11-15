@@ -2,6 +2,7 @@ import { useState } from "react";
 import { UserPen, Menu, X } from "lucide-react";
 import { useAuth } from "../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
+import { getCookie } from "../utils/cookies";
 
 export default function Navbar() {
   const { signOut } = useAuth();
@@ -9,17 +10,19 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleSignOut = async () => {
-    signOut();
-    navigate("/login");
+    await signOut();
+    window.location.reload();
   };
 
   const toggleMenu = () => setIsOpen(!isOpen);
 
+  const userName = getCookie("username");
+
   return (
-    <header className="bg-gray-900 text-white shadow-md">
+    <header className="bg-gradient-to-r from-slate-800 to-slate-700 text-white shadow-md border-b border-slate-600">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
         <h1
-          className="text-2xl font-bold cursor-pointer"
+          className="text-2xl font-bold cursor-pointer hover:text-blue-400 transition-colors"
           onClick={() => navigate("/")}
         >
           Junction 2025
@@ -33,18 +36,15 @@ export default function Navbar() {
         </button>
 
         <div className="hidden md:flex items-center space-x-10">
-          <div className="flex items-center space-x-4">
-            <div
-              className="flex items-center space-x-2 cursor-pointer"
-              onClick={() => navigate("/profile")}
-            >
-              <UserPen className="h-6 w-6 text-white" />
-              <p className="font-medium">Profile</p>
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center shadow-lg">
+              <UserPen className="w-5 h-5 text-white" />
             </div>
+            <p className="font-medium">Hello, {userName}</p>
           </div>
           <button
             onClick={handleSignOut}
-            className="cursor-pointer px-4 py-2 bg-white text-gray-900 rounded-md font-medium hover:bg-gray-100 transition"
+            className="cursor-pointer px-4 py-2 bg-blue-600 text-white rounded-md font-medium hover:bg-blue-700 transition-colors"
           >
             Sign Out
           </button>
@@ -52,16 +52,12 @@ export default function Navbar() {
       </div>
 
       {isOpen && (
-        <div className="md:hidden bg-gray-900 border-t border-gray-800 flex flex-col space-y-4 py-4 px-6">
-          <div
-            className="flex items-center space-x-2 cursor-pointer"
-            onClick={() => {
-              navigate("/profile");
-              setIsOpen(false);
-            }}
-          >
-            <UserPen className="h-6 w-6 text-white" />
-            <p className="font-medium">Profile</p>
+        <div className="md:hidden bg-slate-700 border-t border-slate-600 flex flex-col space-y-4 py-4 px-6">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center shadow-lg">
+              <UserPen className="w-5 h-5 text-white" />
+            </div>
+            <p className="font-medium">Hello, {userName}</p>
           </div>
 
           <button
@@ -69,7 +65,7 @@ export default function Navbar() {
               handleSignOut();
               setIsOpen(false);
             }}
-            className="w-full mt-2 px-4 py-2 bg-white text-gray-900 rounded-md font-medium hover:bg-gray-100 transition"
+            className="w-full mt-2 px-4 py-2 bg-blue-600 text-white rounded-md font-medium hover:bg-blue-700 transition-colors"
           >
             Sign Out
           </button>

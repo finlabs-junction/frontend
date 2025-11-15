@@ -1,5 +1,6 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import { type User } from "../../types";
+import { deleteCookie } from "../../utils/cookies";
 
 export interface UserState {
   user?: User;
@@ -25,6 +26,8 @@ export const userSlice = createSlice({
       state.user = undefined;
       state.token = undefined;
       localStorage.removeItem("persist:auth");
+      deleteCookie("username");
+      deleteCookie("__Session-token");
     },
   },
 });

@@ -36,8 +36,10 @@ import {
   Brain,
 } from "lucide-react";
 import { toast, Toaster } from "sonner";
+import { useNavigate } from "react-router";
 
 export default function App() {
+  const navigate = useNavigate();
   // Time simulation state
   const [currentDate, setCurrentDate] = useState(new Date(2008, 0, 1)); // Start at 2008 for financial crisis simulation
   const [isPlaying, setIsPlaying] = useState(false);
@@ -328,6 +330,10 @@ export default function App() {
   };
 
   const lifestyleIndicators = calculateLifestyleIndicators();
+
+  useEffect(() => {
+    navigate("/");
+  }, []);
 
   // Time simulation effect
   useEffect(() => {
