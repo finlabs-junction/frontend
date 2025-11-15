@@ -28,6 +28,7 @@ import {
   useStopGameMutation,
   useGetStockPricesMutation,
   useGetGameStateMutation,
+  useGetAllAccomodationsQuery,
 } from "../redux/api/gameApi";
 import LoadingPage from "../components/LoadingScreen";
 import { type NewsArticle } from "../types";
@@ -36,13 +37,10 @@ import { useGameStatePolling } from "../hooks/useGameStatePolling";
 import { useTextSelection } from "../hooks/useTextSelection";
 import { useFinancialHandlers } from "../hooks/useFinancialHandlers";
 import { calculateLifestyleIndicators } from "../utils/lifestyleIndicators";
-import {
-  getInitialExpenses,
-  getInitialIncomes,
-  getInitialFinancialHistory,
-} from "../constants/gameData";
+import { getInitialExpenses, getInitialIncomes } from "../constants/gameData";
 import { getCookie } from "../utils/cookies";
 import { Leaderboard } from "../components/Leaderboard";
+import { FinancialChatbot } from "../components/FinancialChatbot";
 
 export default function Home() {
   const { signOut } = useAuth();
@@ -56,6 +54,7 @@ export default function Home() {
   const [pauseGame, { isLoading: isLoadingPauseGame }] = usePauseGameMutation();
   const [stopGame, { isLoading: isLoadingStopGame }] = useStopGameMutation();
   const [getStockPrices] = useGetStockPricesMutation();
+  const all_accommodations = useGetAllAccomodationsQuery();
 
   const isPlayer = localStorage.getItem("isHost") === "false";
   const isMultiplayer = localStorage.getItem("isHost") !== null;
@@ -72,8 +71,20 @@ export default function Home() {
     getInitialExpenses(currentGameState)
   );
   const [startedOnce, setStartedOnce] = useState(false);
+  const [financialHistory, setFinancialHistory] = useState<
+    Array<{ date: string; balance: number; income: number; expenses: number }>
+  >([
+    {
+      date: new Date(2008, 0, 1).toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+      }),
+      balance: currentGameState?.balance ?? 15000,
+      income: currentGameState?.monthlyIncome ?? 3550,
+      expenses: currentGameState?.monthlyExpenses ?? 3000,
+    },
+  ]);
   const incomes = getInitialIncomes(currentGameState);
-  const financialHistory = getInitialFinancialHistory();
 
   const monthlyIncome = incomes.reduce((sum, inc) => sum + inc.amount, 0);
   const budget = monthlyIncome * 1.5;
@@ -88,8 +99,10 @@ export default function Home() {
     clearSelection,
   } = useTextSelection();
 
-  const { handleBuyStock, handleSellStock, handleChangeAccommodation } =
-    useFinancialHandlers(expenses, setExpenses);
+  const { handleBuyStock, handleSellStock } = useFinancialHandlers(
+    expenses,
+    setExpenses
+  );
 
   useGameStatePolling({
     isPlayer,
@@ -129,7 +142,10 @@ export default function Home() {
           }
         }
 
-        setIsPlaying(result.data.sessionStatus === "running");
+        setIsPlaying(
+          result.data.sessionStatus === "running" &&
+            result.data.timeProgressionMultiplier > 0
+        );
 
         const news = result.data.events || [];
         setNewsArticles((prev) => {
@@ -138,6 +154,46 @@ export default function Home() {
             (article: NewsArticle) => !existingIds.has(article.id)
           );
           return [...prev, ...newArticles];
+        });
+
+        // Update financial history with new data point
+        const date = new Date(result.data.time);
+        const dateString = date.toLocaleDateString("en-US", {
+          month: "short",
+          day: "numeric",
+        });
+
+        setFinancialHistory((prev) => {
+          // Check if we already have data for this date
+          const lastEntry = prev[prev.length - 1];
+          if (lastEntry && lastEntry.date === dateString) {
+            // Update the last entry with new values
+            return [
+              ...prev.slice(0, -1),
+              {
+                date: dateString,
+                balance: result.data.balance ?? lastEntry.balance,
+                income: result.data.monthlyIncome ?? lastEntry.income,
+                expenses: result.data.monthlyExpenses ?? lastEntry.expenses,
+              },
+            ];
+          }
+
+          // Add new entry and keep last 30 data points for clean visualization
+          const newHistory = [
+            ...prev,
+            {
+              date: dateString,
+              balance: result.data.balance ?? 0,
+              income: result.data.monthlyIncome ?? 0,
+              expenses: result.data.monthlyExpenses ?? 0,
+            },
+          ];
+
+          // Keep only the last 30 data points
+          return newHistory.length > 30
+            ? newHistory.slice(newHistory.length - 30)
+            : newHistory;
         });
       }
     }, 1000);
@@ -160,15 +216,18 @@ export default function Home() {
       const dates = Object.keys(priceHistory).sort();
 
       // Format current date to match the key format in priceHistory
-      const currentDateKey = currentDate.toISOString().split('T')[0];
+      const currentDateKey = currentDate.toISOString().split("T")[0];
 
       // Calculate yesterday's date
       const yesterday = new Date(currentDate);
       yesterday.setDate(yesterday.getDate() - 1);
-      const yesterdayKey = yesterday.toISOString().split('T')[0];
+      const yesterdayKey = yesterday.toISOString().split("T")[0];
 
       // Get prices for current date and yesterday
-      const currentPrice = priceHistory[currentDateKey] || priceHistory[dates[dates.length - 1]] || 0;
+      const currentPrice =
+        priceHistory[currentDateKey] ||
+        priceHistory[dates[dates.length - 1]] ||
+        0;
       const previousPrice = priceHistory[yesterdayKey] || currentPrice;
 
       const change = currentPrice - previousPrice;
@@ -217,7 +276,8 @@ export default function Home() {
     isLoadingStartGame ||
     isLoadingMultiplier ||
     isLoadingPauseGame ||
-    isLoadingStopGame
+    isLoadingStopGame ||
+    all_accommodations.isLoading
   ) {
     return <LoadingPage />;
   }
@@ -232,6 +292,7 @@ export default function Home() {
         speed={speed}
         onPlayPause={async () => {
           if (!isPlaying) {
+            await timeMultiplierMutation(speed);
             await startGame(startedOnce);
             setStartedOnce(true);
           } else {
@@ -316,12 +377,7 @@ export default function Home() {
                 />
               </TabsContent>
               <TabsContent value="actions" className="mt-6">
-                <ActionsPanel
-                  onChangeAccommodation={handleChangeAccommodation}
-                  onChangeMonthlyGroceryExpense={() => {}}
-                  onChangeMonthlyLeisureExpense={() => {}}
-                  onChangeBudget={() => {}}
-                />
+                <ActionsPanel />
               </TabsContent>
             </Tabs>
           </div>
@@ -349,6 +405,9 @@ export default function Home() {
           onClose={clearSelection}
         />
       )}
+
+      {/* Financial AI Chatbot */}
+      <FinancialChatbot />
     </div>
   );
 }

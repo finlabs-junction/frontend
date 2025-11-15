@@ -2,12 +2,39 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/QualitySlop.png" />
+    <link rel="icon" type="image/png" href="/QualitySlop.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Junction Frontend</title>
+
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#1e293b" />
+    <meta
+      name="description"
+      content="Experience real-world financial events and learn to manage your finances through interactive simulation"
+    />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+    <meta name="apple-mobile-web-app-title" content="Junction 2025" />
+
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" sizes="152x152" href="/icon-152x152.png" />
+    <link rel="apple-touch-icon" sizes="192x192" href="/icon-192x192.png" />
+
+    <!-- Web App Manifest -->
+    <link rel="manifest" href="/manifest.json" />
+
+    <title>Junction 2025 - Financial Simulation</title>
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+
+    <!-- Sienna Accessibility Script -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/sienna-accessibility@latest/dist/sienna-accessibility.umd.js"
+      defer
+    ></script>
   </body>
 </html>

@@ -1,15 +1,23 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import { type GameState, type StockPrices } from "../../types";
+import {
+  type Accomodation,
+  type GameState,
+  type StockPrices,
+} from "../../types";
 
 export interface GameData {
   state?: GameState;
   stockPrices?: StockPrices;
+  accomodations: Accomodation[];
+  currentAccommodationId?: string;
 }
 
 const initialState: GameData = {
   state: undefined,
   stockPrices: undefined,
+  accomodations: [],
+  currentAccommodationId: undefined,
 };
 
 export const gameSlice = createSlice({
@@ -21,6 +29,12 @@ export const gameSlice = createSlice({
     },
     setStockPrices: (state, action: PayloadAction<StockPrices>) => {
       state.stockPrices = action.payload;
+    },
+    setAccomodations: (state, action: PayloadAction<Accomodation[]>) => {
+      state.accomodations = action.payload;
+    },
+    setCurrentAccommodationId: (state, action: PayloadAction<string>) => {
+      state.currentAccommodationId = action.payload;
     },
   },
 });

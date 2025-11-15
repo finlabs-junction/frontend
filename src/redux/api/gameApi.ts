@@ -3,7 +3,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { type RootState } from "../store";
 import { gameSlice } from "../slices/gameSlice";
-import type { GameState, StockPrices } from "../../types";
+import type { Accomodation, GameState, StockPrices } from "../../types";
 
 interface ExplainEventRequest {
   context: string;
@@ -12,6 +12,19 @@ interface ExplainEventRequest {
 
 interface ExplainEventResponse {
   explanation: string;
+}
+
+interface ChatRequest {
+  message: string;
+}
+
+interface ChatResponse {
+  reply: string;
+}
+
+interface GetAllAccomodationsResponse {
+  currentAccommodationId: string;
+  accommodations: Accomodation[];
 }
 
 export const gameApi = createApi({
@@ -141,6 +154,47 @@ export const gameApi = createApi({
         };
       },
     }),
+    chatWithAI: builder.mutation<ChatResponse, ChatRequest>({
+      query(data) {
+        return {
+          url: `chat`,
+          method: "POST",
+          body: data,
+        };
+      },
+    }),
+    getAllAccomodations: builder.query<GetAllAccomodationsResponse, void>({
+      query() {
+        return {
+          url: `lifestyle/accommodations`,
+          method: "GET",
+        };
+      },
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        try {
+          const { data } = await queryFulfilled;
+          await dispatch(
+            gameSlice.actions.setAccomodations(data.accommodations)
+          );
+          await dispatch(
+            gameSlice.actions.setCurrentAccommodationId(
+              data.currentAccommodationId
+            )
+          );
+        } catch (error: any) {
+          // Error handling is now done in components to avoid duplicates
+        }
+      },
+    }),
+    moveAccommodation: builder.mutation<void, string>({
+      query(accommodationId) {
+        return {
+          url: `lifestyle/accommodations/move`,
+          method: "POST",
+          body: { accommodationId },
+        };
+      },
+    }),
   }),
 });
 
@@ -156,4 +210,7 @@ export const {
   useBuyStocksMutation,
   useSellStocksMutation,
   useExplainEventMutation,
+  useChatWithAIMutation,
+  useGetAllAccomodationsQuery,
+  useMoveAccommodationMutation,
 } = gameApi;

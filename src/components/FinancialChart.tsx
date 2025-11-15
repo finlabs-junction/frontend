@@ -71,7 +71,9 @@ export function FinancialChart({ data }: FinancialChartProps) {
               strokeWidth={2}
               name="Balance"
               dot={{ r: 3 }}
-              isAnimationActive={false}
+              isAnimationActive={true}
+              animationDuration={800}
+              animationEasing="ease-in-out"
             />
             <Line
               type="monotone"
@@ -80,7 +82,9 @@ export function FinancialChart({ data }: FinancialChartProps) {
               strokeWidth={2}
               name="Income"
               dot={{ r: 3 }}
-              isAnimationActive={false}
+              isAnimationActive={true}
+              animationDuration={800}
+              animationEasing="ease-in-out"
             />
             <Line
               type="monotone"
@@ -89,7 +93,9 @@ export function FinancialChart({ data }: FinancialChartProps) {
               strokeWidth={2}
               name="Expenses"
               dot={{ r: 3 }}
-              isAnimationActive={false}
+              isAnimationActive={true}
+              animationDuration={800}
+              animationEasing="ease-in-out"
             />
           </LineChart>
         </ResponsiveContainer>
