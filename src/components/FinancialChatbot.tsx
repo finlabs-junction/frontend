@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, forwardRef, useImperativeHandle } from "react";
 import { MessageCircle, X, Send, Loader2 } from "lucide-react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
@@ -12,6 +12,7 @@ interface Message {
   role: "user" | "assistant";
   content: string;
   timestamp: Date;
+  isEvaluation?: boolean;
 }
 
 const INITIAL_MESSAGE: Message = {
@@ -22,7 +23,12 @@ const INITIAL_MESSAGE: Message = {
   timestamp: new Date(),
 };
 
-export function FinancialChatbot() {
+export interface FinancialChatbotRef {
+  addEvaluationMessage: (content: string) => void;
+  openChat: () => void;
+}
+
+export const FinancialChatbot = forwardRef<FinancialChatbotRef>((_, ref) => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([INITIAL_MESSAGE]);
   const [inputValue, setInputValue] = useState("");
@@ -31,13 +37,31 @@ export function FinancialChatbot() {
 
   const [chatWithAI, { isLoading }] = useChatWithAIMutation();
 
+  // Expose methods to parent
+  useImperativeHandle(ref, () => ({
+    addEvaluationMessage: (content: string) => {
+      const evaluationMessage: Message = {
+        id: Date.now().toString(),
+        role: "assistant",
+        content,
+        timestamp: new Date(),
+        isEvaluation: true,
+      };
+      setMessages((prev) => [...prev, evaluationMessage]);
+      setIsOpen(true); // Auto-open chat
+    },
+    openChat: () => {
+      setIsOpen(true);
+    },
+  }));
+
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
   useEffect(() => {
     scrollToBottom();
-  }, []);
+  }, [messages]);
 
   const getFinancialContext = (gameState: GameState | null): string => {
     if (!gameState) return "";
@@ -192,9 +216,16 @@ ${inputValue}`;
                   className={`max-w-[80%] rounded-2xl px-4 py-2 ${
                     message.role === "user"
                       ? "bg-gradient-to-br from-blue-600 to-purple-600 text-white"
+                      : message.isEvaluation
+                      ? "bg-gradient-to-br from-amber-50 to-orange-50 text-gray-800 shadow-md border-2 border-amber-300"
                       : "bg-white text-gray-800 shadow-md border border-gray-200"
                   }`}
                 >
+                  {message.isEvaluation && (
+                    <div className="text-xs font-semibold text-amber-600 mb-1">
+                      📊 Financial Evaluation
+                    </div>
+                  )}
                   <p className="text-sm whitespace-pre-wrap break-words">
                     {message.content}
                   </p>
@@ -250,4 +281,6 @@ ${inputValue}`;
       )}
     </>
   );
-}
+});
+
+FinancialChatbot.displayName = 'FinancialChatbot';

@@ -28,7 +28,7 @@ export default function Navbar() {
           className="text-2xl font-bold cursor-pointer hover:text-blue-400 transition-colors"
           onClick={() => navigate("/")}
         >
-          Junction 2025
+          FinLabs
         </h1>
 
         <button

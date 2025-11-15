@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { useState } from "react";
+import React, { useState } from "react";
 import { TimeControls } from "../components/TimeControls";
 import { BudgetDashboard } from "../components/BudgetDashboard";
 import { ExpenseManager } from "../components/ExpenseManager";
@@ -27,6 +27,7 @@ import {
   usePauseGameMutation,
   useStopGameMutation,
   useGetAllAccomodationsQuery,
+  useGetEvaluationMutation,
 } from "../redux/api/gameApi";
 import LoadingPage from "../components/LoadingScreen";
 import { type NewsArticle } from "../types";
@@ -38,20 +39,21 @@ import { calculateLifestyleIndicators } from "../utils/lifestyleIndicators";
 import { getInitialExpenses, getInitialIncomes } from "../constants/gameData";
 import { getCookie } from "../utils/cookies";
 import { Leaderboard } from "../components/Leaderboard";
-import { FinancialChatbot } from "../components/FinancialChatbot";
-import { EvaluationModal } from "../components/EvaluationModal";
+import { FinancialChatbot, type FinancialChatbotRef } from "../components/FinancialChatbot";
 import { useEvaluationTimer } from "../hooks/useEvaluationTimer";
 
 export default function Home() {
   const { signOut } = useAuth();
   const currentGameState = useAppSelector((state) => state.game.state);
   const stockPrices = useAppSelector((state) => state.game.stockPrices);
+  const chatbotRef = React.useRef<FinancialChatbotRef>(null);
 
   const [startGame, { isLoading: isLoadingStartGame }] = useStartGameMutation();
   const [timeMultiplierMutation, { isLoading: isLoadingMultiplier }] =
     useSetTimeMultiplierMutation();
   const [pauseGame, { isLoading: isLoadingPauseGame }] = usePauseGameMutation();
   const [stopGame, { isLoading: isLoadingStopGame }] = useStopGameMutation();
+  const [getEvaluation] = useGetEvaluationMutation();
   const all_accommodations = useGetAllAccomodationsQuery();
 
   const isPlayer = localStorage.getItem("isHost") === "false";
@@ -102,10 +104,21 @@ export default function Home() {
     setExpenses
   );
 
-  // Evaluation timer - only for logged-in users
-  const { showEvaluation, closeEvaluation } = useEvaluationTimer({
+  // Evaluation timer - triggers chatbot evaluation every 1 minute for logged-in users
+  useEvaluationTimer({
     intervalMinutes: 1,
     enabled: !!username, // Only enable if user is logged in
+    onEvaluation: async () => {
+      try {
+        const response = await getEvaluation().unwrap();
+        chatbotRef.current?.addEvaluationMessage(response.content);
+      } catch (error) {
+        console.error('Failed to fetch evaluation:', error);
+        chatbotRef.current?.addEvaluationMessage(
+          "I tried to evaluate your financial progress, but encountered an error. Feel free to ask me directly about your finances!"
+        );
+      }
+    },
   });
 
   useGameStatePolling({
@@ -320,11 +333,8 @@ export default function Home() {
         />
       )}
 
-      {/* Financial AI Chatbot */}
-      <FinancialChatbot />
-
-      {/* Evaluation Modal - appears every 2 minutes for logged-in users */}
-      <EvaluationModal isOpen={showEvaluation} onClose={closeEvaluation} />
+      {/* Financial AI Chatbot - receives evaluation messages every 1 minute */}
+      <FinancialChatbot ref={chatbotRef} />
     </div>
   );
 }

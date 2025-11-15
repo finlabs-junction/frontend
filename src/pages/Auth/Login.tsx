@@ -123,7 +123,7 @@ export default function LoginPage() {
               <GraduationCap className="w-8 h-8 text-white" />
             </div>
             <div>
-              <h1 className="text-3xl">Financial Simulation</h1>
+              <h1 className="text-3xl">FinLabs - Financial Simulation</h1>
               <p className="text-gray-600">Learning Tool</p>
             </div>
           </div>
