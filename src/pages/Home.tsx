@@ -117,7 +117,8 @@ export default function Home() {
         if (isPlayer) {
           if (result.data.sessionStatus === "ended") {
             toast.error("Game has ended. Redirecting to waiting room.");
-            signOut();
+            await signOut();
+            window.location.reload();
             return;
           }
         }

@@ -14,6 +14,7 @@ export interface GameState {
   monthlyNetIncome: number;
   occupation: string;
   monthlySalary: number;
+  monthlyDividends: number;
   healthLevel: number;
   happinessLevel: number;
   energyLevel: number;

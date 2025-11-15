@@ -10,6 +10,7 @@ import {
   Briefcase,
   TrendingUp,
 } from "lucide-react";
+import type { GameState } from "../types";
 
 export const getInitialExpenses = (gameState?: any) => [
   {
@@ -63,11 +64,11 @@ export const getInitialExpenses = (gameState?: any) => [
   },
 ];
 
-export const getInitialIncomes = (gameState?: any) => [
+export const getInitialIncomes = (gameState?: GameState) => [
   {
     id: "salary",
     source: "Salary",
-    amount: 3500,
+    amount: gameState?.monthlySalary ?? 3000,
     icon: Briefcase,
     type: "recurring" as const,
     description: gameState?.occupation ?? "Software Developer",
@@ -75,7 +76,7 @@ export const getInitialIncomes = (gameState?: any) => [
   {
     id: "stocks",
     source: "Stock Dividends",
-    amount: 50,
+    amount: gameState?.monthlyDividends ?? 550,
     icon: TrendingUp,
     type: "recurring" as const,
     description: "Portfolio dividends",
