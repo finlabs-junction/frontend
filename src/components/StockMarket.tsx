@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { TrendingUp, TrendingDown } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Button } from "./ui/button";
@@ -40,12 +40,12 @@ export function StockMarket({
   const [selectedStock, setSelectedStock] = useState<string | null>(null);
   const [shares, setShares] = useState<number>(1);
 
-  const formatCurrency = (amount: number) => {
+  const formatCurrency = useCallback((amount: number) => {
     return new Intl.NumberFormat("en-US", {
       style: "currency",
       currency: "USD",
     }).format(amount);
-  };
+  }, []);
 
   return (
     <Card data-context="stock-market">
@@ -120,6 +120,7 @@ export function StockMarket({
                           stroke={stock.change >= 0 ? "#16a34a" : "#dc2626"}
                           strokeWidth={2}
                           dot={false}
+                          isAnimationActive={false}
                         />
                       </LineChart>
                     </ResponsiveContainer>

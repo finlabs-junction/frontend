@@ -39,6 +39,7 @@ export const useAuth = () => {
   };
 
   const signOut = async () => {
+    localStorage.removeItem("isHost");
     await logoutUser().unwrap();
     dispatch(userSlice.actions.logOut());
     navigate("/login");

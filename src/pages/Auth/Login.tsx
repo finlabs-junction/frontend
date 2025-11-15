@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from "react";
 import {
   GraduationCap,
@@ -5,6 +6,8 @@ import {
   TrendingUp,
   DollarSign,
   ArrowRight,
+  Joystick,
+  NetworkIcon,
 } from "lucide-react";
 import {
   Card,
@@ -15,17 +18,37 @@ import {
 import { Input } from "../../components/ui/input";
 import { Button } from "../../components/ui/button";
 import { Label } from "../../components/ui/label";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "../../components/ui/dialog";
 import { motion } from "motion/react";
 import { useAuth } from "../../hooks/useAuth";
 import { useNavigate } from "react-router";
 import LoadingScreen from "../../components/LoadingScreen";
+import {
+  useJoinLearningMutation,
+  useSessionCreateMutation,
+} from "../../redux/api/userApi";
+import { setCookie } from "../../utils/cookies";
 
 export default function LoginPage() {
+  const { signIn } = useAuth();
+  const navigate = useNavigate();
+
+  const [joinLearning] = useJoinLearningMutation();
+  const [sessionCreate] = useSessionCreateMutation();
+
   const [userName, setUserName] = useState<string>("");
   const [error, setError] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
-  const { signIn } = useAuth();
-  const navigate = useNavigate();
+  const [joinLearningModalOpen, setJoinLearningModalOpen] =
+    useState<boolean>(false);
+  const [sessionId, setSessionId] = useState<string>("");
+  const [joinError, setJoinError] = useState<string>("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -44,6 +67,41 @@ export default function LoginPage() {
         navigate("/");
       }
     }, 2000);
+  };
+
+  const handleJoinLearning = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setJoinError("");
+
+    if (!userName.trim()) {
+      setJoinError("Please enter your username");
+      return;
+    }
+
+    if (!sessionId.trim()) {
+      setJoinError("Please enter a session ID");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const result = await joinLearning({
+        username: userName,
+        sessionId: sessionId.trim(),
+      });
+      setCookie("username", userName);
+
+      if ("error" in result) {
+        setJoinError("Failed to join session. Please check the session ID.");
+        setLoading(false);
+      } else {
+        window.location.href = "/waiting-room-user";
+      }
+    } catch (err) {
+      setJoinError("An error occurred while joining the session");
+      setLoading(false);
+    }
   };
 
   if (loading) {
@@ -156,7 +214,7 @@ export default function LoginPage() {
               </p>
             </CardHeader>
             <CardContent>
-              <form onSubmit={handleSubmit} className="space-y-6">
+              <form onSubmit={handleSubmit} className="space-y-2">
                 <div className="space-y-2">
                   <Label htmlFor="username" className="text-sm">
                     Username
@@ -187,10 +245,40 @@ export default function LoginPage() {
 
                 <Button
                   type="submit"
-                  className="cursor-pointer w-full h-12 text-base bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+                  className="mt-2 cursor-pointer w-full h-12 text-base bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
                 >
                   Start Learning
                   <ArrowRight className="w-4 h-4 ml-2" />
+                </Button>
+                <div className="text-center text-gray-500 py-2">or</div>
+                <Button
+                  type="button"
+                  className="cursor-pointer w-full h-12 text-base bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+                  onClick={() => setJoinLearningModalOpen(true)}
+                >
+                  Join Game
+                  <Joystick className="w-4 h-4 ml-2" />
+                </Button>
+                <Button
+                  type="button"
+                  className="cursor-pointer w-full h-12 text-base bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+                  onClick={async () => {
+                    setLoading(true);
+                    const result = await sessionCreate({
+                      username: userName || "host",
+                    });
+
+                    if (!("error" in result)) {
+                      setCookie("username", userName || "host");
+                      window.location.href = "/waiting-room";
+                    } else {
+                      setError("Failed to create session");
+                      setLoading(false);
+                    }
+                  }}
+                >
+                  Host Game
+                  <NetworkIcon className="w-4 h-4 ml-2" />
                 </Button>
 
                 <div className="pt-4 border-t">
@@ -204,6 +292,87 @@ export default function LoginPage() {
           </Card>
         </motion.div>
       </div>
+
+      {/* Join Learning Modal */}
+      <Dialog
+        open={joinLearningModalOpen}
+        onOpenChange={setJoinLearningModalOpen}
+      >
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Join Learning Session</DialogTitle>
+            <DialogDescription>
+              Enter the session ID to join an existing learning session.
+            </DialogDescription>
+          </DialogHeader>
+          <form onSubmit={handleJoinLearning} className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="usernameJoin" className="text-sm">
+                Username
+              </Label>
+              <Input
+                id="usernameJoin"
+                type="text"
+                placeholder="Enter your username"
+                value={userName}
+                onChange={(e) => {
+                  setUserName(e.target.value);
+                  setError("");
+                }}
+                className={`h-12 text-base ${error ? "border-red-500" : ""}`}
+                autoFocus
+                autoComplete="username"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="sessionId" className="text-sm">
+                Session ID
+              </Label>
+              <Input
+                id="sessionId"
+                type="text"
+                placeholder="Enter session ID"
+                value={sessionId}
+                onChange={(e) => {
+                  setSessionId(e.target.value);
+                  setJoinError("");
+                }}
+                className={`h-12 text-base ${joinError ? "border-red-500" : ""}`}
+                autoFocus
+              />
+              {joinError && (
+                <motion.p
+                  initial={{ opacity: 0, y: -5 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="text-sm text-red-600"
+                >
+                  {joinError}
+                </motion.p>
+              )}
+            </div>
+            <div className="flex gap-3">
+              <Button
+                type="button"
+                variant="outline"
+                className="flex-1"
+                onClick={() => {
+                  setJoinLearningModalOpen(false);
+                  setSessionId("");
+                  setJoinError("");
+                }}
+              >
+                Cancel
+              </Button>
+              <Button
+                type="submit"
+                className="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+              >
+                Join Session
+              </Button>
+            </div>
+          </form>
+        </DialogContent>
+      </Dialog>
 
       {/* Floating decorative elements */}
       <motion.div

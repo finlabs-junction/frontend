@@ -1,8 +1,9 @@
 import type { NewsArticle } from "./News";
+import type { Stock } from "./Stock";
 
 export interface GameState {
   sessionId: string;
-  sessionStatus: string;
+  sessionStatus: string; // running or waiting or ended
   username: string;
   isLeader: boolean;
   time: string;
@@ -29,4 +30,9 @@ export interface GameState {
   careerProgressLevel: number;
   skillsEducationLevel: number;
   events: NewsArticle[];
+  players: Array<{
+    username: string;
+    balance: number;
+  }>;
+  stocks: Stock[];
 }

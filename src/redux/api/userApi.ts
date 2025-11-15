@@ -11,6 +11,11 @@ interface LoginProps {
   username: string;
 }
 
+interface JoinLearningProps {
+  sessionId: string;
+  username: string;
+}
+
 export const userApi = createApi({
   reducerPath: "userApi",
   baseQuery: fetchBaseQuery({
@@ -51,7 +56,22 @@ export const userApi = createApi({
         };
       },
     }),
+    joinLearning: builder.mutation<void, JoinLearningProps>({
+      query(data) {
+        return {
+          url: `${data.sessionId}/join`,
+          method: "POST",
+          body: {
+            username: data.username,
+          },
+        };
+      },
+    }),
   }),
 });
 
-export const { useSessionCreateMutation, useSignOutMutation } = userApi;
+export const {
+  useSessionCreateMutation,
+  useSignOutMutation,
+  useJoinLearningMutation,
+} = userApi;

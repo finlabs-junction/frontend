@@ -3,7 +3,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { type RootState } from "../store";
 import { gameSlice } from "../slices/gameSlice";
-import type { GameState } from "../../types";
+import type { GameState, StockPrices } from "../../types";
 
 export const gameApi = createApi({
   reducerPath: "gameApi",
@@ -46,6 +46,14 @@ export const gameApi = createApi({
         };
       },
     }),
+    pauseGame: builder.mutation<void, void>({
+      query() {
+        return {
+          url: "pause",
+          method: "POST",
+        };
+      },
+    }),
     stopGame: builder.mutation<void, void>({
       query() {
         return {
@@ -81,6 +89,40 @@ export const gameApi = createApi({
         };
       },
     }),
+    getStockPrices: builder.mutation<StockPrices, void>({
+      query() {
+        return {
+          url: "stock-prices",
+          method: "GET",
+        };
+      },
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        try {
+          const { data } = await queryFulfilled;
+          await dispatch(gameSlice.actions.setStockPrices(data));
+        } catch (error: any) {
+          // Error handling is now done in components to avoid duplicates
+        }
+      },
+    }),
+    buyStocks: builder.mutation<void, { symbol: string; quantity: number }>({
+      query(data) {
+        return {
+          url: `stock/${data.symbol}/buy`,
+          method: "POST",
+          body: data.quantity,
+        };
+      },
+    }),
+    sellStocks: builder.mutation<void, { symbol: string; quantity: number }>({
+      query(data) {
+        return {
+          url: `stock/${data.symbol}/sell`,
+          method: "POST",
+          body: data.quantity,
+        };
+      },
+    }),
   }),
 });
 
@@ -88,5 +130,11 @@ export const {
   useGetGameStateMutation,
   useStartGameMutation,
   useSetTimeMultiplierMutation,
+  usePauseGameMutation,
   useStopGameMutation,
+  useSetMonthlyGroceryExpenseMutation,
+  useSetLeisureExpenseMutation,
+  useGetStockPricesMutation,
+  useBuyStocksMutation,
+  useSellStocksMutation,
 } = gameApi;

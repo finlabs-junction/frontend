@@ -1,3 +1,4 @@
+import { useCallback } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import {
   LineChart,
@@ -23,14 +24,14 @@ interface FinancialChartProps {
 }
 
 export function FinancialChart({ data }: FinancialChartProps) {
-  const formatCurrency = (value: number) => {
+  const formatCurrency = useCallback((value: number) => {
     return new Intl.NumberFormat("en-US", {
       style: "currency",
       currency: "USD",
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     }).format(value);
-  };
+  }, []);
 
   return (
     <Card>
@@ -70,6 +71,7 @@ export function FinancialChart({ data }: FinancialChartProps) {
               strokeWidth={2}
               name="Balance"
               dot={{ r: 3 }}
+              isAnimationActive={false}
             />
             <Line
               type="monotone"
@@ -78,6 +80,7 @@ export function FinancialChart({ data }: FinancialChartProps) {
               strokeWidth={2}
               name="Income"
               dot={{ r: 3 }}
+              isAnimationActive={false}
             />
             <Line
               type="monotone"
@@ -86,6 +89,7 @@ export function FinancialChart({ data }: FinancialChartProps) {
               strokeWidth={2}
               name="Expenses"
               dot={{ r: 3 }}
+              isAnimationActive={false}
             />
           </LineChart>
         </ResponsiveContainer>
