@@ -6,6 +6,7 @@ import { PersistGate } from "redux-persist/integration/react";
 import { SnackbarProvider } from "notistack";
 import { persistor, store } from "./redux/store";
 import { Router } from "./routes/Router";
+import { ThemeProvider } from "./components/ThemeProvider";
 
 // Register service worker for PWA functionality
 if ('serviceWorker' in navigator) {
@@ -23,11 +24,13 @@ if ('serviceWorker' in navigator) {
 createRoot(document.getElementById("root")!).render(
   <Provider store={store}>
     <PersistGate persistor={persistor}>
-      <SnackbarProvider maxSnack={3} autoHideDuration={2000}>
-        <BrowserRouter>
-          <Router />
-        </BrowserRouter>
-      </SnackbarProvider>
+      <ThemeProvider>
+        <SnackbarProvider maxSnack={3} autoHideDuration={2000}>
+          <BrowserRouter>
+            <Router />
+          </BrowserRouter>
+        </SnackbarProvider>
+      </ThemeProvider>
     </PersistGate>
   </Provider>
 );

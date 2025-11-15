@@ -54,7 +54,7 @@ export default function LoadingPage({ onComplete }: LoadingPageProps) {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 flex items-center justify-center p-6 overflow-hidden relative">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex items-center justify-center p-6 overflow-hidden relative">
       {/* Animated background orbs */}
       <motion.div
         animate={{
@@ -119,8 +119,8 @@ export default function LoadingPage({ onComplete }: LoadingPageProps) {
               />
             </motion.div>
             <div className="text-center">
-              <h1 className="text-3xl mb-2">Financial Simulation</h1>
-              <p className="text-gray-600">Learning Tool</p>
+              <h1 className="text-3xl mb-2 text-gray-900 dark:text-white">Financial Simulation</h1>
+              <p className="text-gray-600 dark:text-gray-300">Learning Tool</p>
             </div>
           </div>
         </motion.div>
@@ -221,7 +221,7 @@ export default function LoadingPage({ onComplete }: LoadingPageProps) {
             <div className="relative">
               <Progress
                 value={progress}
-                className="h-3 bg-white/50 backdrop-blur-sm"
+                className="h-3 bg-white/50 dark:bg-slate-700/50 backdrop-blur-sm"
               />
               <motion.div
                 animate={{
@@ -250,14 +250,14 @@ export default function LoadingPage({ onComplete }: LoadingPageProps) {
                   className="flex items-center gap-2"
                 >
                   {React.createElement(loadingSteps[loadingStep].icon, {
-                    className: "w-4 h-4 text-purple-600",
+                    className: "w-4 h-4 text-purple-600 dark:text-purple-400",
                   })}
-                  <span className="text-sm text-gray-600">
+                  <span className="text-sm text-gray-600 dark:text-gray-300">
                     {loadingSteps[loadingStep].text}
                   </span>
                 </motion.div>
               </AnimatePresence>
-              <span className="text-sm text-gray-600">{progress}%</span>
+              <span className="text-sm text-gray-600 dark:text-gray-300">{progress}%</span>
             </div>
           </motion.div>
         </div>
@@ -330,7 +330,7 @@ export default function LoadingPage({ onComplete }: LoadingPageProps) {
           transition={{ delay: 1 }}
           className="mt-8 text-center"
         >
-          <p className="text-xs text-gray-500">
+          <p className="text-xs text-gray-500 dark:text-gray-400">
             💡 Did you know? You can select any text in the app for instant AI
             explanations
           </p>

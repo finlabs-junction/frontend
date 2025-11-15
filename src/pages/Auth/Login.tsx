@@ -34,6 +34,7 @@ import {
   useSessionCreateMutation,
 } from "../../redux/api/userApi";
 import { setCookie } from "../../utils/cookies";
+import { ThemeToggle } from "../../components/ThemeToggle";
 
 export default function LoginPage() {
   const { signIn } = useAuth();
@@ -109,7 +110,7 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 flex items-center justify-center p-6">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex items-center justify-center p-6">
       <div className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
         {/* Left side - Branding & Info */}
         <motion.div
@@ -123,14 +124,18 @@ export default function LoginPage() {
               <GraduationCap className="w-8 h-8 text-white" />
             </div>
             <div>
-              <h1 className="text-3xl">FinLabs - Financial Simulation</h1>
-              <p className="text-gray-600">Learning Tool</p>
+              <h1 className="text-3xl text-gray-900 dark:text-white">
+                FinLabs - Financial Simulation
+              </h1>
+              <p className="text-gray-600 dark:text-gray-300">Learning Tool</p>
             </div>
           </div>
 
           <div className="space-y-4">
-            <h2 className="text-2xl">Master Your Financial Future</h2>
-            <p className="text-gray-600 text-lg">
+            <h2 className="text-2xl text-gray-900 dark:text-white">
+              Master Your Financial Future
+            </h2>
+            <p className="text-gray-600 dark:text-gray-300 text-lg">
               Experience real-world financial events and learn to manage your
               finances through interactive simulation.
             </p>
@@ -141,13 +146,15 @@ export default function LoginPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="p-4 rounded-xl bg-white/60 backdrop-blur-sm border border-gray-200"
+              className="p-4 rounded-xl bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm border border-gray-200 dark:border-slate-700"
             >
-              <div className="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center mb-3">
-                <TrendingUp className="w-5 h-5 text-blue-600" />
+              <div className="w-10 h-10 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center mb-3">
+                <TrendingUp className="w-5 h-5 text-blue-600 dark:text-blue-400" />
               </div>
-              <h3 className="text-sm mb-1">Live Market Simulation</h3>
-              <p className="text-xs text-gray-600">
+              <h3 className="text-sm mb-1 text-gray-900 dark:text-white">
+                Live Market Simulation
+              </h3>
+              <p className="text-xs text-gray-600 dark:text-gray-400">
                 Experience historical financial events starting from 2008
               </p>
             </motion.div>
@@ -156,13 +163,15 @@ export default function LoginPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
-              className="p-4 rounded-xl bg-white/60 backdrop-blur-sm border border-gray-200"
+              className="p-4 rounded-xl bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm border border-gray-200 dark:border-slate-700"
             >
-              <div className="w-10 h-10 rounded-lg bg-purple-100 flex items-center justify-center mb-3">
-                <Sparkles className="w-5 h-5 text-purple-600" />
+              <div className="w-10 h-10 rounded-lg bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center mb-3">
+                <Sparkles className="w-5 h-5 text-purple-600 dark:text-purple-400" />
               </div>
-              <h3 className="text-sm mb-1">AI-Powered Learning</h3>
-              <p className="text-xs text-gray-600">
+              <h3 className="text-sm mb-1 text-gray-900 dark:text-white">
+                AI-Powered Learning
+              </h3>
+              <p className="text-xs text-gray-600 dark:text-gray-400">
                 Get personalized coaching and contextual explanations
               </p>
             </motion.div>
@@ -171,13 +180,15 @@ export default function LoginPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
-              className="p-4 rounded-xl bg-white/60 backdrop-blur-sm border border-gray-200"
+              className="p-4 rounded-xl bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm border border-gray-200 dark:border-slate-700"
             >
-              <div className="w-10 h-10 rounded-lg bg-green-100 flex items-center justify-center mb-3">
-                <DollarSign className="w-5 h-5 text-green-600" />
+              <div className="w-10 h-10 rounded-lg bg-green-100 dark:bg-green-900/30 flex items-center justify-center mb-3">
+                <DollarSign className="w-5 h-5 text-green-600 dark:text-green-400" />
               </div>
-              <h3 className="text-sm mb-1">Budget Management</h3>
-              <p className="text-xs text-gray-600">
+              <h3 className="text-sm mb-1 text-gray-900 dark:text-white">
+                Budget Management
+              </h3>
+              <p className="text-xs text-gray-600 dark:text-gray-400">
                 Track expenses, income, and lifestyle indicators
               </p>
             </motion.div>
@@ -186,13 +197,15 @@ export default function LoginPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5 }}
-              className="p-4 rounded-xl bg-white/60 backdrop-blur-sm border border-gray-200"
+              className="p-4 rounded-xl bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm border border-gray-200 dark:border-slate-700"
             >
-              <div className="w-10 h-10 rounded-lg bg-orange-100 flex items-center justify-center mb-3">
-                <GraduationCap className="w-5 h-5 text-orange-600" />
+              <div className="w-10 h-10 rounded-lg bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center mb-3">
+                <GraduationCap className="w-5 h-5 text-orange-600 dark:text-orange-400" />
               </div>
-              <h3 className="text-sm mb-1">Learn by Doing</h3>
-              <p className="text-xs text-gray-600">
+              <h3 className="text-sm mb-1 text-gray-900 dark:text-white">
+                Learn by Doing
+              </h3>
+              <p className="text-xs text-gray-600 dark:text-gray-400">
                 Practice financial decisions in a risk-free environment
               </p>
             </motion.div>
@@ -206,10 +219,12 @@ export default function LoginPage() {
           transition={{ duration: 0.6 }}
           className="flex items-center justify-center"
         >
-          <Card className="w-full max-w-md shadow-2xl border-2 border-gray-200">
+          <Card className="w-full max-w-md shadow-2xl border-2 border-gray-200 dark:border-slate-700">
             <CardHeader className="space-y-3 pb-6">
-              <CardTitle className="text-2xl text-center">Welcome!</CardTitle>
-              <p className="text-sm text-gray-600 text-center">
+              <CardTitle className="text-2xl text-center text-gray-900 dark:text-white">
+                Welcome!
+              </CardTitle>
+              <p className="text-sm text-gray-600 dark:text-gray-400 text-center">
                 Enter your username to start your financial learning journey
               </p>
             </CardHeader>
@@ -245,7 +260,7 @@ export default function LoginPage() {
 
                 <Button
                   type="submit"
-                  className="mt-2 cursor-pointer w-full h-12 text-base bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+                  className="mt-2 cursor-pointer w-full h-12 text-base bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 dark:text-white"
                 >
                   Start Learning
                   <ArrowRight className="w-4 h-4 ml-2" />
@@ -253,7 +268,7 @@ export default function LoginPage() {
                 <div className="text-center text-gray-500 py-2">or</div>
                 <Button
                   type="button"
-                  className="cursor-pointer w-full h-12 text-base bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+                  className="cursor-pointer w-full h-12 text-base bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 dark:text-white"
                   onClick={() => setJoinLearningModalOpen(true)}
                 >
                   Join Game
@@ -261,7 +276,7 @@ export default function LoginPage() {
                 </Button>
                 <Button
                   type="button"
-                  className="cursor-pointer w-full h-12 text-base bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+                  className="cursor-pointer w-full h-12 text-base bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 dark:text-white"
                   onClick={async () => {
                     setLoading(true);
                     const result = await sessionCreate({
@@ -399,6 +414,11 @@ export default function LoginPage() {
         }}
         className="absolute bottom-20 left-20 w-32 h-32 rounded-full bg-gradient-to-br from-purple-400 to-pink-400 opacity-20 blur-2xl hidden lg:block"
       />
+
+      {/* Theme Toggle - Bottom Right Corner */}
+      <div className="fixed bottom-6 right-6 z-50">
+        <ThemeToggle />
+      </div>
     </div>
   );
 }

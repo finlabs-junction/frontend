@@ -24,7 +24,8 @@ import {
   UserCircle,
   LogOut,
 } from "lucide-react";
-import { toast, Toaster } from "sonner";
+import { toast } from "sonner";
+import { Toaster } from "../components/ui/sonner";
 import { useAuth } from "../hooks/useAuth";
 
 export default function WaitingRoom() {

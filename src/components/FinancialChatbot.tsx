@@ -1,4 +1,10 @@
-import { useState, useRef, useEffect, forwardRef, useImperativeHandle } from "react";
+import {
+  useState,
+  useRef,
+  useEffect,
+  forwardRef,
+  useImperativeHandle,
+} from "react";
 import { MessageCircle, X, Send, Loader2 } from "lucide-react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
@@ -170,18 +176,18 @@ ${inputValue}`;
         {!isOpen && (
           <Button
             onClick={() => setIsOpen(true)}
-            className="h-16 w-16 rounded-full shadow-2xl bg-gradient-to-br from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 transition-all duration-300 hover:scale-110 border-4 border-white"
+            className="h-16 w-16 rounded-full shadow-2xl bg-gradient-to-br from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 transition-all duration-300 hover:scale-110 border-4 border-white dark:border-slate-800"
             aria-label="Open AI Financial Assistant"
           >
             <MessageCircle className="h-8 w-8 text-white" />
-            <span className="absolute -top-1 -right-1 h-4 w-4 bg-green-500 rounded-full border-2 border-white animate-pulse" />
+            <span className="absolute -top-1 -right-1 h-4 w-4 bg-green-500 rounded-full border-2 border-white dark:border-slate-800 animate-pulse" />
           </Button>
         )}
       </div>
 
       {/* Chat Interface */}
       {isOpen && (
-        <Card className="fixed bottom-6 right-6 z-50 w-96 h-[600px] shadow-2xl flex flex-col overflow-hidden border-2 border-gray-200">
+        <Card className="fixed bottom-6 right-6 z-50 w-96 h-[600px] shadow-2xl flex flex-col overflow-hidden border-2 border-gray-200 dark:border-slate-700">
           {/* Header */}
           <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-4 flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -204,7 +210,7 @@ ${inputValue}`;
           </div>
 
           {/* Messages Container */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50">
+          <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50 dark:bg-slate-900">
             {messages.map((message) => (
               <div
                 key={message.id}
@@ -217,12 +223,12 @@ ${inputValue}`;
                     message.role === "user"
                       ? "bg-gradient-to-br from-blue-600 to-purple-600 text-white"
                       : message.isEvaluation
-                      ? "bg-gradient-to-br from-amber-50 to-orange-50 text-gray-800 shadow-md border-2 border-amber-300"
-                      : "bg-white text-gray-800 shadow-md border border-gray-200"
+                        ? "bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-900/30 dark:to-orange-900/30 text-gray-800 dark:text-gray-200 shadow-md border-2 border-amber-300 dark:border-amber-700"
+                        : "bg-white dark:bg-slate-800 text-gray-800 dark:text-gray-200 shadow-md border border-gray-200 dark:border-slate-700"
                   }`}
                 >
                   {message.isEvaluation && (
-                    <div className="text-xs font-semibold text-amber-600 mb-1">
+                    <div className="text-xs font-semibold text-amber-600 dark:text-amber-400 mb-1">
                       📊 Financial Evaluation
                     </div>
                   )}
@@ -233,7 +239,7 @@ ${inputValue}`;
                     className={`text-xs mt-1 ${
                       message.role === "user"
                         ? "text-white/70"
-                        : "text-gray-500"
+                        : "text-gray-500 dark:text-gray-400"
                     }`}
                   >
                     {message.timestamp.toLocaleTimeString([], {
@@ -247,8 +253,8 @@ ${inputValue}`;
 
             {isLoading && (
               <div className="flex justify-start">
-                <div className="bg-white text-gray-800 shadow-md border border-gray-200 rounded-2xl px-4 py-3">
-                  <Loader2 className="h-5 w-5 animate-spin text-blue-600" />
+                <div className="bg-white dark:bg-slate-800 text-gray-800 dark:text-gray-200 shadow-md border border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3">
+                  <Loader2 className="h-5 w-5 animate-spin text-blue-600 dark:text-blue-400" />
                 </div>
               </div>
             )}
@@ -257,7 +263,7 @@ ${inputValue}`;
           </div>
 
           {/* Input Area */}
-          <div className="p-4 bg-white border-t border-gray-200">
+          <div className="p-4 bg-white dark:bg-slate-800 border-t border-gray-200 dark:border-slate-700">
             <div className="flex gap-2">
               <Input
                 value={inputValue}
@@ -265,7 +271,7 @@ ${inputValue}`;
                 onKeyPress={handleKeyPress}
                 placeholder="Ask about your finances..."
                 disabled={isLoading}
-                className="flex-1 border-gray-300 focus:border-blue-500"
+                className="flex-1 border-gray-300 dark:border-slate-600 focus:border-blue-500 dark:focus:border-blue-400"
               />
               <Button
                 onClick={handleSendMessage}
@@ -273,7 +279,7 @@ ${inputValue}`;
                 className="bg-gradient-to-br from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
                 size="icon"
               >
-                <Send className="h-4 w-4" />
+                <Send className="h-4 w-4 text-white" />
               </Button>
             </div>
           </div>
@@ -283,4 +289,4 @@ ${inputValue}`;
   );
 });
 
-FinancialChatbot.displayName = 'FinancialChatbot';
+FinancialChatbot.displayName = "FinancialChatbot";

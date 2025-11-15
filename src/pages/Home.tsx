@@ -39,7 +39,10 @@ import { calculateLifestyleIndicators } from "../utils/lifestyleIndicators";
 import { getInitialExpenses, getInitialIncomes } from "../constants/gameData";
 import { getCookie } from "../utils/cookies";
 import { Leaderboard } from "../components/Leaderboard";
-import { FinancialChatbot, type FinancialChatbotRef } from "../components/FinancialChatbot";
+import {
+  FinancialChatbot,
+  type FinancialChatbotRef,
+} from "../components/FinancialChatbot";
 import { useEvaluationTimer } from "../hooks/useEvaluationTimer";
 
 export default function Home() {
@@ -113,7 +116,7 @@ export default function Home() {
         const response = await getEvaluation().unwrap();
         chatbotRef.current?.addEvaluationMessage(response.content);
       } catch (error) {
-        console.error('Failed to fetch evaluation:', error);
+        console.error("Failed to fetch evaluation:", error);
         chatbotRef.current?.addEvaluationMessage(
           "I tried to evaluate your financial progress, but encountered an error. Feel free to ask me directly about your finances!"
         );
@@ -210,7 +213,10 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50" data-context="general">
+    <div
+      className="min-h-screen bg-gray-50 dark:bg-slate-900"
+      data-context="general"
+    >
       <Toaster position="top-right" richColors />
 
       <TimeControls
@@ -237,10 +243,10 @@ export default function Home() {
       <div className="max-w-7xl mx-auto px-6 py-6">
         <div className="mb-6 flex items-start justify-between">
           <div>
-            <h1 className="text-3xl mb-2">
+            <h1 className="text-3xl mb-2 text-gray-900 dark:text-white">
               Financial Simulation Learning Tool
             </h1>
-            <p className="text-gray-600">
+            <p className="text-gray-600 dark:text-gray-300">
               Experience real-world financial events and learn to manage your
               finances through interactive simulation
             </p>
