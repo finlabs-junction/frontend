@@ -62,7 +62,7 @@ Lifestyle Indicators:
 - Career Progress: ${gameState.careerProgressLevel}%
 - Skills/Education: ${gameState.skillsEducationLevel}%
 
-Stocks Portfolio: ${gameState.stocks.length > 0 ? gameState.stocks.map(s => `${s.symbol}: ${s.size} shares`).join(', ') : 'No stocks owned'}`;
+Stocks Portfolio: ${gameState.stocks.length > 0 ? gameState.stocks.map((s) => `${s.symbol}: ${s.size} shares`).join(", ") : "No stocks owned"}`;
   };
 
   const handleSendMessage = async () => {
@@ -80,11 +80,13 @@ Stocks Portfolio: ${gameState.stocks.length > 0 ? gameState.stocks.map(s => `${s
 
     try {
       // Build the message with financial context
-      const contextualMessage = `${getFinancialContext(currentGameState)}
+      const contextualMessage = `${getFinancialContext(currentGameState!)}
 
 User Question: ${inputValue}`;
 
-      const response = await chatWithAI({ message: contextualMessage }).unwrap();
+      const response = await chatWithAI({
+        message: contextualMessage,
+      }).unwrap();
 
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
@@ -160,9 +162,12 @@ User Question: ${inputValue}`;
             {messages.length === 0 && (
               <div className="text-center text-gray-500 mt-8">
                 <MessageCircle className="h-12 w-12 mx-auto mb-3 text-gray-400" />
-                <p className="text-sm mb-2">Welcome to your AI Financial Assistant!</p>
+                <p className="text-sm mb-2">
+                  Welcome to your AI Financial Assistant!
+                </p>
                 <p className="text-xs text-gray-400">
-                  Ask me anything about your finances, expenses, or investment strategy.
+                  Ask me anything about your finances, expenses, or investment
+                  strategy.
                 </p>
               </div>
             )}
