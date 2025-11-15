@@ -26,6 +26,7 @@ export const userSlice = createSlice({
       state.user = undefined;
       state.token = undefined;
       localStorage.removeItem("persist:auth");
+      localStorage.removeItem("sessionToken");
       deleteCookie("username");
       deleteCookie("__Session-token");
     },

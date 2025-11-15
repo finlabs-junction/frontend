@@ -33,8 +33,14 @@ export const gameApi = createApi({
     baseUrl: `${import.meta.env.VITE_APP_BACKEND_URL}/`,
     credentials: "include", // Send cookies with every request
     prepareHeaders: (headers, { getState }) => {
-      const token = (getState() as RootState).user.token;
-      headers.set("Authorization", `Bearer ${token}`);
+      // Try to get token from localStorage first, then fall back to Redux state
+      const localToken = localStorage.getItem("sessionToken");
+      const reduxToken = (getState() as RootState).user.token;
+      const token = localToken || reduxToken;
+
+      if (token) {
+        headers.set("Authorization", `Bearer ${token}`);
+      }
 
       return headers;
     },

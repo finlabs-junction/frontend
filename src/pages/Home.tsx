@@ -262,8 +262,9 @@ export default function Home() {
   // Handler for stopping multiplayer game
   const handleStopGame = async () => {
     try {
-      localStorage.removeItem("isHost");
       await stopGame();
+      localStorage.removeItem("isHost");
+      localStorage.removeItem("sessionToken");
       await signOut();
       toast.success("Game stopped successfully!");
       window.location.href = "/login";

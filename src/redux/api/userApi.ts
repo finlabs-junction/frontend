@@ -2,9 +2,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { type RootState } from "../store";
+import { userSlice } from "../slices/userSlice";
 
 interface LoginResponse {
   sessionId: string;
+  token: string;
 }
 
 interface LoginProps {
@@ -16,14 +18,24 @@ interface JoinLearningProps {
   username: string;
 }
 
+interface JoinResponse {
+  token: string;
+}
+
 export const userApi = createApi({
   reducerPath: "userApi",
   baseQuery: fetchBaseQuery({
     baseUrl: `${import.meta.env.VITE_APP_BACKEND_URL}/session`,
     credentials: "include", // Send cookies with every request
     prepareHeaders: (headers, { getState }) => {
-      const token = (getState() as RootState).user.token;
-      headers.set("Authorization", `Bearer ${token}`);
+      // Try to get token from localStorage first, then fall back to Redux state
+      const localToken = localStorage.getItem("sessionToken");
+      const reduxToken = (getState() as RootState).user.token;
+      const token = localToken || reduxToken;
+
+      if (token) {
+        headers.set("Authorization", `Bearer ${token}`);
+      }
 
       return headers;
     },
@@ -37,12 +49,15 @@ export const userApi = createApi({
           body: data,
         };
       },
-      async onQueryStarted(_) {
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
         try {
-          /* const { data } = await queryFulfilled;
+          const { data } = await queryFulfilled;
 
-          await dispatch(userSlice.actions.setUser(data.user));
-          await dispatch(userSlice.actions.setToken(data.access_token));*/
+          // Save sessionToken to localStorage
+          if (data.token) {
+            localStorage.setItem("sessionToken", data.token);
+            await dispatch(userSlice.actions.setToken(data.token));
+          }
         } catch (error: any) {
           // Error handling is now done in components to avoid duplicates
         }
@@ -56,7 +71,7 @@ export const userApi = createApi({
         };
       },
     }),
-    joinLearning: builder.mutation<void, JoinLearningProps>({
+    joinLearning: builder.mutation<JoinResponse, JoinLearningProps>({
       query(data) {
         return {
           url: `${data.sessionId}/join`,
@@ -65,6 +80,20 @@ export const userApi = createApi({
             username: data.username,
           },
         };
+      },
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        try {
+          const { data } = await queryFulfilled;
+
+          // Save sessionToken to localStorage
+
+          if (data.token) {
+            localStorage.setItem("sessionToken", data.token);
+            await dispatch(userSlice.actions.setToken(data.token));
+          }
+        } catch (error: any) {
+          // Error handling is now done in components to avoid duplicates
+        }
       },
     }),
   }),

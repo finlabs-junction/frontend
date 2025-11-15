@@ -40,6 +40,7 @@ export const useAuth = () => {
 
   const signOut = async () => {
     localStorage.removeItem("isHost");
+    localStorage.removeItem("sessionToken");
     await logoutUser().unwrap();
     dispatch(userSlice.actions.logOut());
     navigate("/login");
