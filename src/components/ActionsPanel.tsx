@@ -36,28 +36,28 @@ export function ActionsPanel() {
       title: "Change Accommodation",
       icon: Home,
       description: "Upgrade or downgrade your living situation",
-      color: "bg-purple-50 text-purple-600",
+      color: "bg-purple-50 dark:bg-purple-950/30 text-purple-600 dark:text-purple-400",
     },
     {
       id: "budget",
       title: "Adjust Grocery Budget",
       icon: Wallet,
       description: "Modify your spending allocations",
-      color: "bg-blue-50 text-blue-600",
+      color: "bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400",
     },
     {
       id: "leisure",
       title: "Leisure Activities",
       icon: Coffee,
       description: "Change your entertainment spending",
-      color: "bg-green-50 text-green-600",
+      color: "bg-green-50 dark:bg-green-950/30 text-green-600 dark:text-green-400",
     },
     {
       id: "loan",
       title: "Loan Management",
       icon: Building2,
       description: "Apply for or pay back loans",
-      color: "bg-red-50 text-red-600",
+      color: "bg-red-50 dark:bg-red-950/30 text-red-600 dark:text-red-400",
     },
   ];
 
@@ -79,7 +79,7 @@ export function ActionsPanel() {
             return (
               <Dialog key={action.id}>
                 <DialogTrigger asChild>
-                  <button className="p-4 border rounded-lg hover:bg-gray-50 transition-colors text-left">
+                  <button className="p-4 border border-gray-200 dark:border-slate-700 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-800/50 transition-colors text-left">
                     <div className="flex items-start gap-3">
                       <div
                         className={`w-10 h-10 rounded-lg ${action.color} flex items-center justify-center flex-shrink-0`}
@@ -87,8 +87,8 @@ export function ActionsPanel() {
                         <Icon className="w-5 h-5" />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm">{action.title}</p>
-                        <p className="text-xs text-gray-500">
+                        <p className="text-sm text-gray-900 dark:text-white">{action.title}</p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400">
                           {action.description}
                         </p>
                       </div>
@@ -211,7 +211,7 @@ function ActionForm({ actionId }: { actionId: string }) {
             required
             className="mt-4"
           />
-          <p className="text-xs text-gray-500 mt-1">
+          <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
             Set your monthly grocery spending limit
           </p>
         </div>
@@ -238,7 +238,7 @@ function ActionForm({ actionId }: { actionId: string }) {
             required
             className="mt-4"
           />
-          <p className="text-xs text-gray-500 mt-1">
+          <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
             Set your monthly entertainment and leisure spending limit
           </p>
         </div>
@@ -250,7 +250,7 @@ function ActionForm({ actionId }: { actionId: string }) {
   }
 
   return (
-    <div className="text-sm text-gray-600">
+    <div className="text-sm text-gray-600 dark:text-gray-400">
       This action will be available in the full simulation. Configure your{" "}
       {actionId} settings here.
     </div>

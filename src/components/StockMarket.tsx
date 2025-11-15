@@ -57,7 +57,7 @@ export function StockMarket({
             tooltipText="Learn about stock market investing"
           />
         </div>
-        <p className="text-sm text-gray-500 mt-1">
+        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
           Available Balance: {formatCurrency(balance)}
         </p>
       </CardHeader>
@@ -68,26 +68,26 @@ export function StockMarket({
               key={stock.symbol}
               className={`p-4 border rounded-lg cursor-pointer transition-colors ${
                 selectedStock === stock.symbol
-                  ? "border-blue-600 bg-blue-50"
-                  : "hover:bg-gray-50"
+                  ? "border-blue-600 dark:border-blue-500 bg-blue-50 dark:bg-blue-950/30"
+                  : "border-gray-200 dark:border-slate-700 hover:bg-gray-50 dark:hover:bg-slate-800/50"
               }`}
               onClick={() => setSelectedStock(stock.symbol)}
             >
               <div className="flex items-start justify-between mb-2">
                 <div>
                   <div className="flex items-center gap-2">
-                    <p className="text-sm">{stock.symbol}</p>
+                    <p className="text-sm text-gray-900 dark:text-white">{stock.symbol}</p>
                     <Badge variant="outline" className="text-xs">
                       {stock.owned} shares
                     </Badge>
                   </div>
-                  <p className="text-xs text-gray-500">{stock.name}</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">{stock.name}</p>
                 </div>
                 <div className="text-right">
-                  <p className="text-sm">{formatCurrency(stock.price)}</p>
+                  <p className="text-sm text-gray-900 dark:text-white">{formatCurrency(stock.price)}</p>
                   <div
                     className={`flex items-center gap-1 text-xs ${
-                      stock.change >= 0 ? "text-green-600" : "text-red-600"
+                      stock.change >= 0 ? "text-green-600 dark:text-green-400" : "text-red-600 dark:text-red-400"
                     }`}
                   >
                     {stock.change >= 0 ? (
@@ -104,7 +104,7 @@ export function StockMarket({
               </div>
 
               {selectedStock === stock.symbol && (
-                <div className="mt-4 pt-4 border-t">
+                <div className="mt-4 pt-4 border-t border-gray-200 dark:border-slate-700">
                   <div className="h-32 mb-4">
                     <ResponsiveContainer width="100%" height="100%">
                       <LineChart data={stock.history}>
@@ -134,7 +134,7 @@ export function StockMarket({
                       onChange={(e) => setShares(parseInt(e.target.value) || 1)}
                       className="w-20"
                     />
-                    <span className="text-xs text-gray-500">shares</span>
+                    <span className="text-xs text-gray-500 dark:text-gray-400">shares</span>
                     <Button
                       size="sm"
                       className="ml-auto"

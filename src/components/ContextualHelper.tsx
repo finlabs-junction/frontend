@@ -55,20 +55,20 @@ export function ContextualHelper({
           maxWidth: "320px",
         }}
       >
-        <Card className="p-4 shadow-lg border-2 border-blue-200 bg-white">
+        <Card className="p-4 shadow-lg border-2 border-blue-200 dark:border-blue-800 bg-white dark:bg-slate-800">
           <div className="space-y-3">
             <div className="flex items-start justify-between">
               <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
+                <div className="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
                   {isLoading ? (
-                    <Loader2 className="w-4 h-4 text-blue-600 animate-spin" />
+                    <Loader2 className="w-4 h-4 text-blue-600 dark:text-blue-400 animate-spin" />
                   ) : (
-                    <Sparkles className="w-4 h-4 text-blue-600" />
+                    <Sparkles className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                   )}
                 </div>
                 <div>
-                  <h4 className="text-sm">News Explanation</h4>
-                  <p className="text-xs text-gray-500">AI Explanation</p>
+                  <h4 className="text-sm text-gray-900 dark:text-white">News Explanation</h4>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">AI Explanation</p>
                 </div>
               </div>
               <Button
@@ -81,22 +81,22 @@ export function ContextualHelper({
               </Button>
             </div>
 
-            <div className="p-3 bg-blue-50 rounded-lg">
-              <p className="text-xs text-gray-700 italic">"{selectedText}"</p>
+            <div className="p-3 bg-blue-50 dark:bg-blue-950/30 rounded-lg">
+              <p className="text-xs text-gray-700 dark:text-gray-300 italic">"{selectedText}"</p>
             </div>
 
             {isLoading && (
-              <p className="text-xs text-gray-600">Loading explanation...</p>
+              <p className="text-xs text-gray-600 dark:text-gray-400">Loading explanation...</p>
             )}
 
             {isError && (
-              <p className="text-xs text-red-600">
+              <p className="text-xs text-red-600 dark:text-red-400">
                 Failed to load explanation. Please try again.
               </p>
             )}
 
             {data && !isLoading && (
-              <p className="text-xs text-gray-600">{data.explanation}</p>
+              <p className="text-xs text-gray-600 dark:text-gray-300">{data.explanation}</p>
             )}
           </div>
         </Card>

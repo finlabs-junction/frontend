@@ -81,7 +81,7 @@ export default function WaitingRoom() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 flex items-center justify-center p-6">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex items-center justify-center p-6">
       <Toaster position="top-right" richColors />
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
@@ -89,15 +89,15 @@ export default function WaitingRoom() {
         transition={{ duration: 0.5 }}
         className="w-full max-w-2xl"
       >
-        <Card className="shadow-2xl border-2 border-gray-200">
+        <Card className="shadow-2xl border-2 border-gray-200 dark:border-slate-700">
           <CardHeader className="text-center space-y-4 pb-6">
             <div className="flex justify-center">
               <div className="w-20 h-20 rounded-full bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center shadow-lg">
                 <Crown className="w-10 h-10 text-white" />
               </div>
             </div>
-            <CardTitle className="text-3xl">Waiting Room</CardTitle>
-            <CardDescription className="text-base">
+            <CardTitle className="text-3xl text-gray-900 dark:text-white">Waiting Room</CardTitle>
+            <CardDescription className="text-base dark:text-gray-300">
               Share the session ID with your participants and start the game
               when everyone has joined
             </CardDescription>
@@ -105,10 +105,10 @@ export default function WaitingRoom() {
 
           <CardContent className="space-y-6">
             {/* Session ID Section */}
-            <div className="p-6 rounded-xl bg-gradient-to-br from-blue-50 to-purple-50 border-2 border-blue-200">
+            <div className="p-6 rounded-xl bg-gradient-to-br from-blue-50 to-purple-50 dark:from-slate-800 dark:to-slate-700 border-2 border-blue-200 dark:border-blue-800">
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium text-gray-700">
+                  <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
                     Session ID
                   </span>
                   <Button
@@ -130,7 +130,7 @@ export default function WaitingRoom() {
                     )}
                   </Button>
                 </div>
-                <div className="text-3xl font-bold text-center tracking-wider text-blue-600 bg-white rounded-lg p-4 shadow-sm">
+                <div className="text-3xl font-bold text-center tracking-wider text-blue-600 dark:text-blue-400 bg-white dark:bg-slate-900 rounded-lg p-4 shadow-sm">
                   {sessionId || "Loading..."}
                 </div>
               </div>
@@ -139,8 +139,8 @@ export default function WaitingRoom() {
             {/* Players Section */}
             <div className="space-y-4">
               <div className="flex items-center gap-2">
-                <Users className="w-5 h-5 text-gray-600" />
-                <h3 className="text-lg font-semibold">
+                <Users className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
                   Participants ({players.length})
                 </h3>
               </div>
@@ -149,9 +149,9 @@ export default function WaitingRoom() {
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  className="text-center py-12 text-gray-500"
+                  className="text-center py-12 text-gray-500 dark:text-gray-400"
                 >
-                  <Users className="w-16 h-16 mx-auto mb-4 text-gray-300" />
+                  <Users className="w-16 h-16 mx-auto mb-4 text-gray-300 dark:text-gray-600" />
                   <p className="text-lg">Waiting for participants to join...</p>
                   <div className="flex justify-center gap-2 mt-4">
                     <motion.div
@@ -187,14 +187,14 @@ export default function WaitingRoom() {
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: index * 0.1 }}
-                      className="flex items-center gap-3 p-4 rounded-lg bg-white border border-gray-200 shadow-sm hover:shadow-md transition-shadow"
+                      className="flex items-center gap-3 p-4 rounded-lg bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 shadow-sm hover:shadow-md transition-shadow"
                     >
                       <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-purple-400 flex items-center justify-center">
                         <UserCircle className="w-6 h-6 text-white" />
                       </div>
                       <div className="flex-1">
-                        <p className="font-medium">{player}</p>
-                        <p className="text-xs text-gray-500">Participant</p>
+                        <p className="font-medium text-gray-900 dark:text-white">{player}</p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400">Participant</p>
                       </div>
                       <motion.div
                         animate={{ scale: [1, 1.2, 1] }}
@@ -227,7 +227,7 @@ export default function WaitingRoom() {
                 )}
               </Button>
               {players.length === 0 && (
-                <p className="text-center text-sm text-gray-500 mt-3">
+                <p className="text-center text-sm text-gray-500 dark:text-gray-400 mt-3">
                   You need at least one participant to start the game
                 </p>
               )}
@@ -236,7 +236,7 @@ export default function WaitingRoom() {
               <Button
                 onClick={handleEndGame}
                 variant="outline"
-                className="w-full h-12 text-base border-2 border-red-300 text-red-600 hover:bg-red-50 hover:border-red-400"
+                className="w-full h-12 text-base border-2 border-red-300 dark:border-red-800 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 hover:border-red-400 dark:hover:border-red-700"
               >
                 <LogOut className="w-4 h-4 mr-2" />
                 End Game

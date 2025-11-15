@@ -37,7 +37,7 @@ export default function WaitingRoomUser() {
   }, [getGameState, navigate]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 flex items-center justify-center p-6">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex items-center justify-center p-6">
       <Toaster position="top-right" richColors />
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
@@ -45,7 +45,7 @@ export default function WaitingRoomUser() {
         transition={{ duration: 0.5 }}
         className="w-full max-w-2xl"
       >
-        <Card className="shadow-2xl border-2 border-gray-200">
+        <Card className="shadow-2xl border-2 border-gray-200 dark:border-slate-700">
           <CardHeader className="text-center space-y-4 pb-6">
             <div className="flex justify-center">
               <motion.div
@@ -56,20 +56,20 @@ export default function WaitingRoomUser() {
                 <Clock className="w-10 h-10 text-white" />
               </motion.div>
             </div>
-            <CardTitle className="text-3xl">
+            <CardTitle className="text-3xl text-gray-900 dark:text-white">
               Waiting for Game to Start
             </CardTitle>
-            <CardDescription className="text-base">
+            <CardDescription className="text-base dark:text-gray-300">
               The host will start the game once all participants have joined
             </CardDescription>
           </CardHeader>
 
           <CardContent className="space-y-6">
             {/* Status Section */}
-            <div className="p-6 rounded-xl bg-gradient-to-br from-blue-50 to-purple-50 border-2 border-blue-200">
+            <div className="p-6 rounded-xl bg-gradient-to-br from-blue-50 to-purple-50 dark:from-slate-800 dark:to-slate-700 border-2 border-blue-200 dark:border-blue-800">
               <div className="flex items-center justify-center gap-3">
-                <Loader2 className="w-6 h-6 text-blue-600 animate-spin" />
-                <p className="text-lg font-medium text-gray-700">
+                <Loader2 className="w-6 h-6 text-blue-600 dark:text-blue-400 animate-spin" />
+                <p className="text-lg font-medium text-gray-700 dark:text-gray-300">
                   Waiting for host to start the game...
                 </p>
               </div>
@@ -78,8 +78,8 @@ export default function WaitingRoomUser() {
             {/* Players Section */}
             <div className="space-y-4">
               <div className="flex items-center gap-2">
-                <Users className="w-5 h-5 text-gray-600" />
-                <h3 className="text-lg font-semibold">
+                <Users className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
                   Participants ({players.length})
                 </h3>
               </div>
@@ -88,9 +88,9 @@ export default function WaitingRoomUser() {
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  className="text-center py-8 text-gray-500"
+                  className="text-center py-8 text-gray-500 dark:text-gray-400"
                 >
-                  <Users className="w-12 h-12 mx-auto mb-3 text-gray-300" />
+                  <Users className="w-12 h-12 mx-auto mb-3 text-gray-300 dark:text-gray-600" />
                   <p>Loading participants...</p>
                 </motion.div>
               ) : (
@@ -101,14 +101,14 @@ export default function WaitingRoomUser() {
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: index * 0.1 }}
-                      className="flex items-center gap-3 p-4 rounded-lg bg-white border border-gray-200 shadow-sm"
+                      className="flex items-center gap-3 p-4 rounded-lg bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 shadow-sm"
                     >
                       <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-purple-400 flex items-center justify-center">
                         <UserCircle className="w-6 h-6 text-white" />
                       </div>
                       <div className="flex-1">
-                        <p className="font-medium">{player}</p>
-                        <p className="text-xs text-gray-500">Ready</p>
+                        <p className="font-medium text-gray-900 dark:text-white">{player}</p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400">Ready</p>
                       </div>
                       <motion.div
                         animate={{ scale: [1, 1.2, 1] }}
@@ -122,14 +122,14 @@ export default function WaitingRoomUser() {
             </div>
 
             {/* Tips Section */}
-            <div className="p-6 rounded-xl bg-gradient-to-br from-purple-50 to-pink-50 border border-purple-200">
+            <div className="p-6 rounded-xl bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950/30 dark:to-pink-950/30 border border-purple-200 dark:border-purple-800">
               <div className="flex items-start gap-3">
-                <Sparkles className="w-6 h-6 text-purple-600 flex-shrink-0 mt-1" />
+                <Sparkles className="w-6 h-6 text-purple-600 dark:text-purple-400 flex-shrink-0 mt-1" />
                 <div>
-                  <h4 className="font-semibold text-gray-900 mb-2">
+                  <h4 className="font-semibold text-gray-900 dark:text-white mb-2">
                     While you wait...
                   </h4>
-                  <ul className="text-sm text-gray-600 space-y-1">
+                  <ul className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
                     <li>
                       • Get ready to experience historical financial events
                       starting from 2008
