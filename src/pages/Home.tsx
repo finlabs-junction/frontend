@@ -79,8 +79,14 @@ export default function Home() {
   const budget = monthlyIncome * 1.5;
 
   // Custom hooks
-  const { selectedText, selectionPosition, selectionContext, clearSelection } =
-    useTextSelection();
+  const {
+    selectedText,
+    selectionPosition,
+    selectionContext,
+    newsId,
+    articleText,
+    clearSelection,
+  } = useTextSelection();
 
   const { handleBuyStock, handleSellStock, handleChangeAccommodation } =
     useFinancialHandlers(expenses, setExpenses);
@@ -145,16 +151,26 @@ export default function Home() {
   const lifestyleIndicators = calculateLifestyleIndicators(currentGameState!);
 
   // Transform stock data for StockMarket component
-  const transformedStocks = () => {
+  const transformedStocks = (currentDate: Date) => {
     if (!stockPrices || !currentGameState?.stocks) return [];
 
     const symbols = Object.keys(stockPrices);
     return symbols.map((symbol) => {
       const priceHistory = stockPrices[symbol];
       const dates = Object.keys(priceHistory).sort();
-      const currentPrice = priceHistory[dates[dates.length - 1]] || 0;
-      const previousPrice =
-        priceHistory[dates[dates.length - 2]] || currentPrice;
+
+      // Format current date to match the key format in priceHistory
+      const currentDateKey = currentDate.toISOString().split('T')[0];
+
+      // Calculate yesterday's date
+      const yesterday = new Date(currentDate);
+      yesterday.setDate(yesterday.getDate() - 1);
+      const yesterdayKey = yesterday.toISOString().split('T')[0];
+
+      // Get prices for current date and yesterday
+      const currentPrice = priceHistory[currentDateKey] || priceHistory[dates[dates.length - 1]] || 0;
+      const previousPrice = priceHistory[yesterdayKey] || currentPrice;
+
       const change = currentPrice - previousPrice;
       const changePercent =
         previousPrice !== 0 ? (change / previousPrice) * 100 : 0;
@@ -164,8 +180,8 @@ export default function Home() {
       );
       const owned = ownedStock?.size || 0;
 
-      // Create history for chart (last 7 data points)
-      const history = dates.slice(-7).map((date) => ({
+      // Create history for chart
+      const history = dates.map((date) => ({
         date,
         price: priceHistory[date],
       }));
@@ -182,7 +198,7 @@ export default function Home() {
     });
   };
 
-  const stocks = transformedStocks();
+  const stocks = transformedStocks(currentDate);
 
   // Handler for stopping multiplayer game
   const handleStopGame = async () => {
@@ -328,6 +344,8 @@ export default function Home() {
           selectedText={selectedText}
           context={selectionContext}
           position={selectionPosition}
+          newsId={newsId}
+          articleText={articleText}
           onClose={clearSelection}
         />
       )}

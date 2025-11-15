@@ -40,7 +40,7 @@ export function TimeControls({
   return (
     <div className="bg-white border-b px-6 py-4">
       <div
-        className={`flex items-center ${isPlayer ? "justify-end" : "justify-between"} max-w-7xl mx-auto`}
+        className={`flex flex-col md:flex-row gap-5 md:gap-0 items-center ${isPlayer ? "justify-end" : "justify-between"} max-w-7xl mx-auto`}
       >
         {!isPlayer && (
           <div className="flex items-center gap-4">

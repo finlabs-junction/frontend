@@ -5,6 +5,15 @@ import { type RootState } from "../store";
 import { gameSlice } from "../slices/gameSlice";
 import type { GameState, StockPrices } from "../../types";
 
+interface ExplainEventRequest {
+  context: string;
+  text: string;
+}
+
+interface ExplainEventResponse {
+  explanation: string;
+}
+
 export const gameApi = createApi({
   reducerPath: "gameApi",
   baseQuery: fetchBaseQuery({
@@ -123,6 +132,15 @@ export const gameApi = createApi({
         };
       },
     }),
+    explainEvent: builder.mutation<ExplainEventResponse, ExplainEventRequest>({
+      query(data) {
+        return {
+          url: `explain-text`,
+          method: "POST",
+          body: data,
+        };
+      },
+    }),
   }),
 });
 
@@ -137,4 +155,5 @@ export const {
   useGetStockPricesMutation,
   useBuyStocksMutation,
   useSellStocksMutation,
+  useExplainEventMutation,
 } = gameApi;

@@ -37,34 +37,39 @@ export function NewsFeed({ articles }: NewsFeedProps) {
           <div className="px-6 pb-6 space-y-4">
             {articles
               .sort((a, b) => b.id - a.id)
-              .map((article) => (
-                <div
-                  key={article.id}
-                  className={`p-4 border rounded-lg ${getCategoryColor("financial")}`}
-                >
-                  <div className="flex items-start gap-3">
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-start justify-between gap-2 mb-1">
-                        <h4 className="text-sm line-clamp-2">
-                          {article.title}
-                        </h4>
-                        <AIHelper
-                          context={`news-${article.id}`}
-                          tooltipText="Get insights about this news"
-                        />
-                      </div>
-                      <p className="text-xs opacity-80 mb-2">
-                        {article.description}
-                      </p>
-                      <div className="flex items-center gap-2 flex-wrap">
-                        <Badge variant="outline" className="text-xs">
-                          {article.date}
-                        </Badge>
+              .map((article) => {
+                const fullArticleText = `${article.title}. ${article.description}`;
+                return (
+                  <div
+                    key={article.id}
+                    className={`p-4 border rounded-lg ${getCategoryColor("financial")}`}
+                    data-news-id={article.id}
+                    data-article-text={fullArticleText}
+                  >
+                    <div className="flex items-start gap-3">
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-start justify-between gap-2 mb-1">
+                          <h4 className="text-sm line-clamp-2">
+                            {article.title}
+                          </h4>
+                          <AIHelper
+                            context={`news-${article.id}`}
+                            tooltipText="Get insights about this news"
+                          />
+                        </div>
+                        <p className="text-xs opacity-80 mb-2">
+                          {article.description}
+                        </p>
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <Badge variant="outline" className="text-xs">
+                            {article.date}
+                          </Badge>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             {articles.length === 0 && (
               <p className="text-sm text-gray-500">
                 No news articles available.
