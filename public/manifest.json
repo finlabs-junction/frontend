@@ -1,6 +1,6 @@
 {
-  "name": "Junction 2025 - Financial Simulation Learning Tool",
-  "short_name": "Junction 2025",
+  "name": "FinLabs - Financial Simulation Learning Tool",
+  "short_name": "FinLabs",
   "description": "Experience real-world financial events and learn to manage your finances through interactive simulation",
   "start_url": "/",
   "display": "standalone",
