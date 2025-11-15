@@ -1,7 +1,5 @@
-import { Play, Pause, FastForward, Calendar } from "lucide-react";
+import { Play, Pause, FastForward } from "lucide-react";
 import { Button } from "./ui/button";
-import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
-import { Calendar as CalendarComponent } from "./ui/calendar";
 
 interface TimeControlsProps {
   currentDate: Date;
@@ -9,7 +7,6 @@ interface TimeControlsProps {
   speed: number;
   onPlayPause: () => void;
   onSpeedChange: (speed: number) => void;
-  onDateChange: (date: Date) => void;
 }
 
 export function TimeControls({
@@ -18,7 +15,6 @@ export function TimeControls({
   speed,
   onPlayPause,
   onSpeedChange,
-  onDateChange,
 }: TimeControlsProps) {
   const formatDate = (date: Date) => {
     return date.toLocaleDateString("en-US", {
@@ -29,8 +25,15 @@ export function TimeControls({
     });
   };
 
-  const speedLabels = ["1x", "2x", "5x", "10x"];
-  const speedValues = [1, 2, 5, 10];
+  const formatTime = (date: Date) => {
+    return date.toLocaleTimeString("en-US", {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  };
+
+  const speedLabels = ["1x", "4x", "12x", "24x"];
+  const speedValues = [1, 4, 12, 24];
 
   return (
     <div className="bg-white border-b px-6 py-4">
@@ -48,23 +51,6 @@ export function TimeControls({
                 <Play className="w-4 h-4" />
               )}
             </Button>
-
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button variant="outline" size="sm">
-                  <Calendar className="w-4 h-4 mr-2" />
-                  Set Date
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-auto p-0">
-                <CalendarComponent
-                  mode="single"
-                  selected={currentDate}
-                  onSelect={(date) => date && onDateChange(date)}
-                  initialFocus
-                />
-              </PopoverContent>
-            </Popover>
           </div>
 
           <div className="flex items-center gap-3">
@@ -86,10 +72,15 @@ export function TimeControls({
             </div>
           </div>
         </div>
-
-        <div className="text-right">
-          <div className="text-sm text-gray-500">Current Date</div>
-          <div>{formatDate(currentDate)}</div>
+        <div className="text-right flex items-center gap-4">
+          <div>
+            <div className="text-sm text-gray-500">Current Date</div>
+            <div>{formatDate(currentDate)}</div>
+          </div>
+          <div>
+            <div className="text-sm text-gray-500">Current Time</div>
+            <div>{formatTime(currentDate)}</div>
+          </div>
         </div>
       </div>
     </div>

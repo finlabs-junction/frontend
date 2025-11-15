@@ -1,23 +1,19 @@
 import { TrendingUp, TrendingDown, DollarSign, PiggyBank } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
-import { Progress } from "./ui/progress";
 
 interface BudgetDashboardProps {
   balance: number;
   monthlyIncome: number;
   monthlyExpenses: number;
-  savings: number;
+  monthlyNetIncome: number;
 }
 
 export function BudgetDashboard({
   balance,
   monthlyIncome,
   monthlyExpenses,
-  savings,
+  monthlyNetIncome,
 }: BudgetDashboardProps) {
-  const netIncome = monthlyIncome - monthlyExpenses;
-  const savingsRate = monthlyIncome > 0 ? (savings / monthlyIncome) * 100 : 0;
-
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat("en-US", {
       style: "currency",
@@ -83,16 +79,11 @@ export function BudgetDashboard({
         </CardHeader>
         <CardContent>
           <div
-            className={`text-2xl ${netIncome >= 0 ? "text-green-600" : "text-red-600"}`}
+            className={`text-2xl ${monthlyNetIncome >= 0 ? "text-green-600" : "text-red-600"}`}
           >
-            {formatCurrency(netIncome)}
+            {formatCurrency(monthlyNetIncome)}
           </div>
-          <div className="mt-2">
-            <Progress value={Math.min(savingsRate, 100)} className="h-2" />
-            <p className="text-xs text-gray-500 mt-1">
-              {savingsRate.toFixed(1)}% savings rate
-            </p>
-          </div>
+          <p className="text-xs text-gray-500 mt-1">Monthly net income</p>
         </CardContent>
       </Card>
     </div>

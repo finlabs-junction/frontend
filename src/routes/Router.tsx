@@ -10,6 +10,7 @@ export const Router: FC = () => {
   const { signOut } = useAuth();
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+
   const [getGameState] = useGetGameStateMutation();
 
   useEffect(() => {

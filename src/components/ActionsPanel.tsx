@@ -21,6 +21,8 @@ import { AIHelper } from "./AIHelper";
 
 interface ActionsPanelProps {
   onChangeAccommodation: (type: string) => void;
+  onChangeMonthlyGroceryExpense: (amount: number) => void;
+  onChangeMonthlyLeisureExpense: (amount: number) => void;
   onChangeBudget: (category: string, amount: number) => void;
 }
 

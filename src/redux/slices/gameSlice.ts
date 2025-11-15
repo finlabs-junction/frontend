@@ -1,25 +1,21 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import { type GameState } from "../../types";
 
-export interface GameState {
-  gameSessionId?: string;
-  gameUsername?: string;
+export interface GameData {
+  state?: GameState;
 }
 
-const initialState: GameState = {
-  gameSessionId: undefined,
-  gameUsername: undefined,
+const initialState: GameData = {
+  state: undefined,
 };
 
 export const gameSlice = createSlice({
   name: "game",
   initialState,
   reducers: {
-    setGameSessionId: (state, action: PayloadAction<string>) => {
-      state.gameSessionId = action.payload;
-    },
-    setGameUsername: (state, action: PayloadAction<string>) => {
-      state.gameUsername = action.payload;
+    setGameState: (state, action: PayloadAction<GameState>) => {
+      state.state = action.payload;
     },
   },
 });

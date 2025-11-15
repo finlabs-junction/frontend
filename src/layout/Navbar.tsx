@@ -1,13 +1,16 @@
 import { useState } from "react";
-import { UserPen, Menu, X } from "lucide-react";
+import { UserPen, Menu, X, CrownIcon } from "lucide-react";
 import { useAuth } from "../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import { getCookie } from "../utils/cookies";
+import { useAppSelector } from "../redux/store";
 
 export default function Navbar() {
   const { signOut } = useAuth();
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
+
+  const currentGameState = useAppSelector((state) => state.game.state);
 
   const handleSignOut = async () => {
     await signOut();
@@ -40,7 +43,12 @@ export default function Navbar() {
             <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center shadow-lg">
               <UserPen className="w-5 h-5 text-white" />
             </div>
-            <p className="font-medium">Hello, {userName}</p>
+            <div className="flex items-center gap-2">
+              <p className="font-medium">Hello, {userName}</p>
+              {currentGameState && currentGameState.isLeader ? (
+                <CrownIcon className="w-5 h-5 text-yellow-400" />
+              ) : null}
+            </div>
           </div>
           <button
             onClick={handleSignOut}

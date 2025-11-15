@@ -3,16 +3,12 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { type RootState } from "../store";
 import { gameSlice } from "../slices/gameSlice";
-
-interface GameStateResponse {
-  sessionId: string;
-  username: string;
-}
+import type { GameState } from "../../types";
 
 export const gameApi = createApi({
   reducerPath: "gameApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: `${import.meta.env.VITE_APP_BACKEND_URL}/poll`,
+    baseUrl: `${import.meta.env.VITE_APP_BACKEND_URL}/`,
     credentials: "include", // Send cookies with every request
     prepareHeaders: (headers, { getState }) => {
       const token = (getState() as RootState).user.token;
@@ -23,10 +19,10 @@ export const gameApi = createApi({
     timeout: 5000, // 5 seconds timeout
   }),
   endpoints: (builder) => ({
-    getGameState: builder.mutation<GameStateResponse, void>({
+    getGameState: builder.mutation<GameState, void>({
       query(data) {
         return {
-          url: "",
+          url: "poll",
           method: "GET",
           body: data,
         };
@@ -35,14 +31,62 @@ export const gameApi = createApi({
         try {
           const { data } = await queryFulfilled;
 
-          await dispatch(gameSlice.actions.setGameSessionId(data.sessionId));
-          await dispatch(gameSlice.actions.setGameUsername(data.username));
+          await dispatch(gameSlice.actions.setGameState(data));
         } catch (error: any) {
           // Error handling is now done in components to avoid duplicates
         }
       },
     }),
+    startGame: builder.mutation<void, boolean>({
+      query(data) {
+        return {
+          url: "start",
+          method: "POST",
+          params: { resume: data },
+        };
+      },
+    }),
+    stopGame: builder.mutation<void, void>({
+      query() {
+        return {
+          url: "stop",
+          method: "POST",
+        };
+      },
+    }),
+    setTimeMultiplier: builder.mutation<void, number>({
+      query(data) {
+        return {
+          url: "set-time-progression-multiplier",
+          method: "POST",
+          body: data,
+        };
+      },
+    }),
+    setMonthlyGroceryExpense: builder.mutation<void, number>({
+      query(data) {
+        return {
+          url: "set-monthly-grocery-expense",
+          method: "POST",
+          body: data,
+        };
+      },
+    }),
+    setLeisureExpense: builder.mutation<void, number>({
+      query(data) {
+        return {
+          url: "set-monthly-leisure-expense",
+          method: "POST",
+          body: data,
+        };
+      },
+    }),
   }),
 });
 
-export const { useGetGameStateMutation } = gameApi;
+export const {
+  useGetGameStateMutation,
+  useStartGameMutation,
+  useSetTimeMultiplierMutation,
+  useStopGameMutation,
+} = gameApi;
