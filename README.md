@@ -126,8 +126,6 @@ FinLabs is an interactive web application that simulates real-world financial sc
 2. **Install dependencies**
    ```bash
    npm install
-   # or
-   yarn install
    ```
 
 3. **Configure environment variables** (if needed)
@@ -136,12 +134,7 @@ FinLabs is an interactive web application that simulates real-world financial sc
    VITE_API_URL=your_backend_api_url
    ```
 
-4. **Generate PWA icons** (optional)
-   ```bash
-   npm run generate-icons
-   ```
-
-5. **Start the development server**
+4. **Start the development server**
    ```bash
    npm run dev
    ```
@@ -235,15 +228,6 @@ junction-frontend/
 ```
 
 ---
-
-## Progressive Web App (PWA)
-
-FinLabs is a fully-featured PWA that can be installed on any device:
-
-- **Offline Support** - Works without internet connection
-- **Install on Desktop/Mobile** - Add to home screen
-- **Fast Performance** - Optimized loading and caching
-- **Responsive Design** - Works on all screen sizes
 
 ---
 
