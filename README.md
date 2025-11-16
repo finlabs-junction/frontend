@@ -2,6 +2,9 @@
 
 <div align="center">
   <img src="public/Finlabs.png" alt="FinLabs Logo" width="200"/>
+  <br>
+  <img src="public/landing_dark2.png" alt="FinLabs Logo" width="500"/>
+  <img src="public/ipaddark.png" alt="FinLabs Logo" width="500"/>
 
   **Experience real-world financial events and learn to manage your finances through interactive simulation**
 
@@ -126,8 +129,6 @@ FinLabs is an interactive web application that simulates real-world financial sc
 2. **Install dependencies**
    ```bash
    npm install
-   # or
-   yarn install
    ```
 
 3. **Configure environment variables** (if needed)
@@ -136,12 +137,7 @@ FinLabs is an interactive web application that simulates real-world financial sc
    VITE_API_URL=your_backend_api_url
    ```
 
-4. **Generate PWA icons** (optional)
-   ```bash
-   npm run generate-icons
-   ```
-
-5. **Start the development server**
+4. **Start the development server**
    ```bash
    npm run dev
    ```
@@ -236,28 +232,8 @@ junction-frontend/
 
 ---
 
-## Progressive Web App (PWA)
-
-FinLabs is a fully-featured PWA that can be installed on any device:
-
-- **Offline Support** - Works without internet connection
-- **Install on Desktop/Mobile** - Add to home screen
-- **Fast Performance** - Optimized loading and caching
-- **Responsive Design** - Works on all screen sizes
-
----
-
-## Browser Support
-
-- Chrome/Edge 90+
-- Firefox 88+
-- Safari 14+
-- Opera 76+
-
----
-
 ## Acknowledgments
 
-Built by Rapole Krupauskaite, Zsombor Horvath, Gergely Daniel, Matyas Nyilas and Denes Balogh for Junction 2025 Hackathon
+Built by Rapole Krupauskaite, Zsombor Horváth, Dániel Gergely, Mátyas Nyilas and Dénes Balogh for Junction 2025 Hackathon
 
 **Technologies & Libraries**: React, TypeScript, Tailwind CSS, Redux Toolkit, Radix UI, and many other amazing open-source projects.
