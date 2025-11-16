@@ -2,6 +2,8 @@
 
 <div align="center">
   <img src="public/Finlabs.png" alt="FinLabs Logo" width="200"/>
+  <img src="public/landing_dark2.png" alt="FinLabs Logo" width="200"/>
+  <img src="public/ipaddark" alt="FinLabs Logo" width="200"/>
 
   **Experience real-world financial events and learn to manage your finances through interactive simulation**
 
