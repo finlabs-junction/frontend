@@ -2,8 +2,10 @@
 
 <div align="center">
   <img src="public/Finlabs.png" alt="FinLabs Logo" width="200"/>
-  <img src="public/landing_dark2.png" alt="FinLabs Logo" width="200"/>
-  <img src="public/ipaddark" alt="FinLabs Logo" width="200"/>
+  <br>
+  <img src="public/landing_dark2.png" alt="FinLabs Logo" width="400"/>
+  <br>
+  <img src="public/ipaddark.png" alt="FinLabs Logo" width="400"/>
 
   **Experience real-world financial events and learn to manage your finances through interactive simulation**
 
@@ -231,19 +233,8 @@ junction-frontend/
 
 ---
 
----
-
-## Browser Support
-
-- Chrome/Edge 90+
-- Firefox 88+
-- Safari 14+
-- Opera 76+
-
----
-
 ## Acknowledgments
 
-Built by Rapole Krupauskaite, Zsombor Horvath, Gergely Daniel, Matyas Nyilas and Denes Balogh for Junction 2025 Hackathon
+Built by Rapole Krupauskaite, Zsombor Horváth, Dániel Gergely, Mátyas Nyilas and Dénes Balogh for Junction 2025 Hackathon
 
 **Technologies & Libraries**: React, TypeScript, Tailwind CSS, Redux Toolkit, Radix UI, and many other amazing open-source projects.
