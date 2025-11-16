@@ -12,7 +12,7 @@ export const useTextSelection = () => {
       const selection = window.getSelection();
       const text = selection?.toString().trim();
 
-      if (text && text.length > 3 && text.length < 200) {
+      if (text && text.length >= 3 && text.length < 200) {
         const range = selection?.getRangeAt(0);
         const rect = range?.getBoundingClientRect();
 
