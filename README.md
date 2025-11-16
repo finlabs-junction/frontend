@@ -3,8 +3,8 @@
 <div align="center">
   <img src="public/Finlabs.png" alt="FinLabs Logo" width="200"/>
   <br>
-  <img src="public/landing_dark2.png" alt="FinLabs Logo" width="500"/>
-  <img src="public/ipaddark.png" alt="FinLabs Logo" width="500"/>
+  <img src="public/landing_dark2.png" alt="FinLabs Logo" width="400"/>
+  <img src="public/ipaddark.png" alt="FinLabs Logo" width="400"/>
 
   **Experience real-world financial events and learn to manage your finances through interactive simulation**
 
@@ -15,6 +15,8 @@
 </div>
 
 ---
+## Before you start reading
+To get an in-depth understanding of our project, we recommend checking out the ![backend repository](https://github.com/finlabs-junction/backend) as well.
 
 ## Value Proposition
 
