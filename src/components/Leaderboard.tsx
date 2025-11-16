@@ -72,7 +72,7 @@ export function Leaderboard({
 
   return (
     <Card className={`${className} overflow-hidden`} data-context="leaderboard">
-      <CardHeader className="pb-4 bg-gradient-to-r from-blue-50 to-purple-50">
+      <CardHeader className="pb-4 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-950/30 dark:to-purple-950/30">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center">
@@ -80,7 +80,7 @@ export function Leaderboard({
             </div>
             <div>
               <CardTitle className="text-lg">Leaderboard</CardTitle>
-              <p className="text-xs text-gray-600">
+              <p className="text-xs text-gray-600 dark:text-gray-400">
                 {players.length} players competing
               </p>
             </div>
@@ -112,9 +112,9 @@ export function Leaderboard({
                     opacity: { duration: 0.2 },
                   }}
                   className={`
-                    relative border-b border-gray-100 last:border-b-0 transition-all
-                    ${isCurrentPlayer ? "bg-blue-50/50" : "hover:bg-gray-50"}
-                    ${isHighlighted ? "bg-blue-100/50" : ""}
+                    relative border-b border-gray-100 dark:border-gray-800 last:border-b-0 transition-all
+                    ${isCurrentPlayer ? "bg-blue-50/50 dark:bg-blue-950/30" : "hover:bg-gray-50 dark:hover:bg-slate-800"}
+                    ${isHighlighted ? "bg-blue-100/50 dark:bg-blue-900/50" : ""}
                   `}
                 >
                   {/* Highlight glow for current player */}
@@ -144,7 +144,7 @@ export function Leaderboard({
                           {getRankIcon(rank)}
                         </motion.div>
                       ) : (
-                        <span className="text-sm text-gray-500">#{rank}</span>
+                        <span className="text-sm text-gray-500 dark:text-gray-400">#{rank}</span>
                       )}
                     </div>
 
@@ -171,7 +171,7 @@ export function Leaderboard({
                         >
                           {player.username}
                           {isCurrentPlayer && (
-                            <span className="ml-2 text-xs text-blue-600">
+                            <span className="ml-2 text-xs text-blue-600 dark:text-blue-400">
                               (You)
                             </span>
                           )}
@@ -179,14 +179,14 @@ export function Leaderboard({
                         {rank === 1 && (
                           <Badge
                             variant="secondary"
-                            className="text-xs py-0 px-1.5 bg-yellow-100 text-yellow-700 border-yellow-300"
+                            className="text-xs py-0 px-1.5 bg-yellow-100 dark:bg-yellow-900/40 text-yellow-700 dark:text-yellow-300 border-yellow-300 dark:border-yellow-700"
                           >
                             Leader
                           </Badge>
                         )}
                       </div>
                       <div className="flex items-center gap-2">
-                        <span className="text-xs text-gray-600">
+                        <span className="text-xs text-gray-600 dark:text-gray-400">
                           {formatBalance(player.balance)}
                         </span>
                       </div>
@@ -219,18 +219,18 @@ export function Leaderboard({
           {/* Empty State */}
           {sortedPlayers.length === 0 && (
             <div className="flex flex-col items-center justify-center py-12 text-center">
-              <Trophy className="w-12 h-12 text-gray-300 mb-3" />
-              <p className="text-sm text-gray-500">No players yet</p>
-              <p className="text-xs text-gray-400">Be the first to join!</p>
+              <Trophy className="w-12 h-12 text-gray-300 dark:text-gray-600 mb-3" />
+              <p className="text-sm text-gray-500 dark:text-gray-400">No players yet</p>
+              <p className="text-xs text-gray-400 dark:text-gray-500">Be the first to join!</p>
             </div>
           )}
         </div>
 
         {/* Current Player Quick Stats */}
         {sortedPlayers.length > 0 && (
-          <div className="border-t bg-gradient-to-r from-blue-50 to-purple-50 p-3">
+          <div className="border-t bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-950/30 dark:to-purple-950/30 p-3">
             <div className="flex items-center justify-between text-xs">
-              <span className="text-gray-600">Your Rank</span>
+              <span className="text-gray-600 dark:text-gray-400">Your Rank</span>
               <span className="font-semibold">
                 #
                 {sortedPlayers.findIndex(
