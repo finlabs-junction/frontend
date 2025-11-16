@@ -67,8 +67,8 @@ export function ContextualHelper({
                   )}
                 </div>
                 <div>
-                  <h4 className="text-sm text-gray-900 dark:text-white">News Explanation</h4>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">AI Explanation</p>
+                  <h4 className="text-sm text-gray-900 dark:text-white">AI Explanation</h4>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">Auto-generated</p>
                 </div>
               </div>
               <Button

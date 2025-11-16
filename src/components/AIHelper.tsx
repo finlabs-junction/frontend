@@ -159,7 +159,7 @@ export function AIHelper({ context, tooltipText = "Get help" }: AIHelperProps) {
     <Popover open={isOpen} onOpenChange={setIsOpen}>
       <PopoverTrigger asChild>
         <button
-          className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-blue-100 hover:bg-blue-200 transition-colors"
+          className="inline-flex items-center justify-center w-4 h-4 rounded-full transition-colors cursor-pointer"
           aria-label={tooltipText}
         >
           <HelpCircle className="w-3 h-3 text-blue-600" />
