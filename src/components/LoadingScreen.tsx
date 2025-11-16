@@ -223,20 +223,6 @@ export default function LoadingPage({ onComplete }: LoadingPageProps) {
                 value={progress}
                 className="h-3 bg-white/50 dark:bg-slate-700/50 backdrop-blur-sm"
               />
-              <motion.div
-                animate={{
-                  opacity: [0.5, 1, 0.5],
-                }}
-                transition={{
-                  duration: 1.5,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
-                className="absolute inset-0 rounded-full bg-gradient-to-r from-transparent via-white/30 to-transparent"
-                style={{
-                  transform: `translateX(${progress - 100}%)`,
-                }}
-              />
             </div>
 
             <div className="flex items-center justify-between">
