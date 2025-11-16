@@ -55,7 +55,7 @@ export function ContextualHelper({
           maxWidth: "320px",
         }}
       >
-        <Card className="p-4 shadow-lg border-2 border-blue-200 dark:border-blue-800 bg-white dark:bg-slate-800">
+        <Card className="p-4 shadow-lg border-2 border-blue-200 dark:border-blue-800 bg-white dark:bg-slate-800 select-none">
           <div className="space-y-3">
             <div className="flex items-start justify-between">
               <div className="flex items-center gap-2">
