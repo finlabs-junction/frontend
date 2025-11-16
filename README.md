@@ -258,6 +258,6 @@ FinLabs is a fully-featured PWA that can be installed on any device:
 
 ## Acknowledgments
 
-Built by Rapole Krupauskaite, Zsombor Horvath, Gergely Daniel and Denes Balogh for Junction 2025 Hackathon
+Built by Rapole Krupauskaite, Zsombor Horvath, Gergely Daniel, Matyas Nyilas and Denes Balogh for Junction 2025 Hackathon
 
 **Technologies & Libraries**: React, TypeScript, Tailwind CSS, Redux Toolkit, Radix UI, and many other amazing open-source projects.
