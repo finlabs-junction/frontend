@@ -51,7 +51,7 @@ export const useGameStatePolling = ({
     setFinancialHistoryRef.current = setFinancialHistory;
     isPlayerRef.current = isPlayer;
     signOutRef.current = signOut;
-  });
+  }, [setCurrentDate, setIsPlaying, setNewsArticles, setFinancialHistory, isPlayer, signOut]);
 
   useEffect(() => {
     const fetchStockPrices = async () => {
